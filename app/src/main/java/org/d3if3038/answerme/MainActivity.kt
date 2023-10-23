@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
 
         navContoller = findNavController(R.id.mainContainerFragment)
 
+        binding.bottomNavigation.selectedItemId = R.id.menuFeeds
         binding.bottomNavigation.setOnItemSelectedListener {
             when(it.itemId) {
                 R.id.menuSetting -> {
