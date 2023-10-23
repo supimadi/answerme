@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/feedsFragment">
+
+    <fragment
+        android:id="@+id/feedsFragment"
+        android:name="org.d3if3038.answerme.ui.FeedsFragment"
+        android:label="FeedsFragment"
+        tools:layout="@layout/fragment_feeds"/>
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="org.d3if3038.answerme.ui.SettingFragment"
+        android:label="SettingFragment"
+        tools:layout="@layout/fragment_setting"/>
+    <fragment
+        android:id="@+id/myPostFragment"
+        android:name="org.d3if3038.answerme.ui.MyPostFragment"
+        android:label="MyPostFragment"
+        tools:layout="@layout/fragment_my_post"/>
+
+</navigation>
