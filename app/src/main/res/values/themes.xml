@@ -13,6 +13,11 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorSurface</item>
         <item name="android:windowLightStatusBar">true</item>
-        <!-- Customize your theme here. -->
+
+        <item name="colorSecondaryContainer">@color/teal_200_light</item>
+
+        <!-- Menu Bar -->
+        <item name="bottomNavigationStyle">@style/Widget.Material3.BottomNavigationView</item>
+        <item name="toolbarStyle">@style/Widget.Material3.Toolbar</item>
     </style>
 </resources>
