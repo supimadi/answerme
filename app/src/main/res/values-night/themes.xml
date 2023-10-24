@@ -11,8 +11,10 @@
         <item name="colorSecondaryVariant">@color/red_200</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
         <!-- Customize your theme here. -->
+
+        <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox</item>
 
         <!-- Menu Bar -->
         <item name="colorSecondaryContainer">@color/teal_700_dark</item>

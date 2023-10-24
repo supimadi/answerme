@@ -5,11 +5,13 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
+    android:background="?attr/colorPrimary"
     tools:context=".MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
         android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -33,6 +35,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <fragment
+        android:layout_marginTop="32dp"
         android:id="@+id/mainContainerFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"

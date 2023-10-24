@@ -9,16 +9,28 @@
         android:id="@+id/feedsFragment"
         android:name="org.d3if3038.answerme.ui.FeedsFragment"
         android:label="FeedsFragment"
-        tools:layout="@layout/fragment_feeds"/>
+        tools:layout="@layout/fragment_feeds">
+        <action
+            android:id="@+id/action_feedsFragment_to_createPostFragment"
+            app:destination="@id/createPostFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/settingFragment"
         android:name="org.d3if3038.answerme.ui.SettingFragment"
         android:label="SettingFragment"
         tools:layout="@layout/fragment_setting"/>
+
     <fragment
         android:id="@+id/myPostFragment"
         android:name="org.d3if3038.answerme.ui.MyPostFragment"
         android:label="MyPostFragment"
         tools:layout="@layout/fragment_my_post"/>
+
+    <fragment
+        android:id="@+id/createPostFragment"
+        android:name="org.d3if3038.answerme.ui.CreatePostFragment"
+        android:label="CreatePostFragment"
+        tools:layout="@layout/fragment_create_post"/>
 
 </navigation>
