@@ -1,4 +1,4 @@
-package org.d3if3038.answerme.ui
+package org.d3if3038.answerme.ui.feeds
 
 import android.os.Bundle
 import android.view.LayoutInflater

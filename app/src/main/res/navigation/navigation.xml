@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/feedsFragment"
-        android:name="org.d3if3038.answerme.ui.FeedsFragment"
+        android:name="org.d3if3038.answerme.ui.feeds.FeedsFragment"
         android:label="Umpan"
         tools:layout="@layout/fragment_feeds">
         <action

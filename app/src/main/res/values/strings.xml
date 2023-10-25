@@ -21,5 +21,6 @@
     <string name="success_message">Success</string>
     <string name="failed_message">%s</string>
     <string name="save_profile">Save Profile</string>
+    <string name="post_it">Post It!</string>
 
 </resources>
