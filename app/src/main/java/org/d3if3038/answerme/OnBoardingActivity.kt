@@ -7,8 +7,13 @@ import androidx.fragment.app.Fragment
 import com.github.appintro.AppIntro2
 import com.github.appintro.AppIntroFragment
 import com.github.appintro.AppIntroPageTransformerType
+import org.d3if3038.answerme.data.SettingDataStore
+import org.d3if3038.answerme.data.dataStore
 
 class OnBoardingActivity : AppIntro2() {
+    private val settingDataStore: SettingDataStore by lazy {
+        SettingDataStore(applicationContext.dataStore)
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,11 +65,13 @@ class OnBoardingActivity : AppIntro2() {
     }
 
     override fun onSkipPressed(currentFragment: Fragment?) {
+        settingDataStore.putBoolean("is_boarded", true)
         super.onSkipPressed(currentFragment)
         finish()
     }
 
     override fun onDonePressed(currentFragment: Fragment?) {
+        settingDataStore.putBoolean("is_boarded", true)
         super.onDonePressed(currentFragment)
         finish()
     }

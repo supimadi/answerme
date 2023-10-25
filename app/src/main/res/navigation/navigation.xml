@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/feedsFragment"
         android:name="org.d3if3038.answerme.ui.FeedsFragment"
-        android:label="FeedsFragment"
+        android:label="Umpan"
         tools:layout="@layout/fragment_feeds">
         <action
             android:id="@+id/action_feedsFragment_to_createPostFragment"
@@ -29,7 +29,7 @@
 
     <fragment
         android:id="@+id/createPostFragment"
-        android:name="org.d3if3038.answerme.ui.CreatePostFragment"
+        android:name="org.d3if3038.answerme.ui.createpost.CreatePostFragment"
         android:label="CreatePostFragment"
         tools:layout="@layout/fragment_create_post"/>
 

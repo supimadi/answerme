@@ -1,4 +1,4 @@
-package org.d3if3038.answerme.ui
+package org.d3if3038.answerme.ui.createpost
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,6 @@ import org.d3if3038.answerme.databinding.FragmentCreatePostBinding
 
 class CreatePostFragment : Fragment() {
     private lateinit var binding: FragmentCreatePostBinding
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
