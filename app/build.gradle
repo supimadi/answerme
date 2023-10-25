@@ -69,11 +69,21 @@ dependencies {
     implementation "androidx.datastore:datastore-preferences:1.0.0"
     ksp("androidx.room:room-compiler:2.5.2")
 
+    // moshi
+    implementation "com.squareup.moshi:moshi:1.9.2"
+    implementation "com.squareup.moshi:moshi-kotlin:1.9.2"
+
+
+    // Photo Profile
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
     // AppIntro or Onboarding
     implementation 'com.github.AppIntro:AppIntro:6.3.1'
 
     // Import the Firebase Bo
     implementation platform('com.google.firebase:firebase-bom:32.3.1')
+    implementation "com.google.firebase:firebase-firestore-ktx"
 
     // Firebase Realtime Database
     implementation("com.google.firebase:firebase-database-ktx")

@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/settingFragment"
-        android:name="org.d3if3038.answerme.ui.SettingFragment"
+        android:name="org.d3if3038.answerme.ui.setting.SettingFragment"
         android:label="SettingFragment"
         tools:layout="@layout/fragment_setting"/>
 

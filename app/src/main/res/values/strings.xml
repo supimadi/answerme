@@ -16,5 +16,10 @@
     <string name="game">Game</string>
     <string name="info">Info</string>
     <string name="study">Study</string>
+    <string name="username">Username</string>
+
+    <string name="success_message">Success</string>
+    <string name="failed_message">%s</string>
+    <string name="save_profile">Save Profile</string>
 
 </resources>
