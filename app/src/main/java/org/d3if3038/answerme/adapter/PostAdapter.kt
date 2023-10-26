@@ -1,18 +1,15 @@
-package org.d3if3038.answerme.ui.mypost
+package org.d3if3038.answerme.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import org.d3if3038.answerme.databinding.PostItemBinding
 import org.d3if3038.answerme.model.Post
 
-class MyPostAdapter : ListAdapter<Post, MyPostAdapter.ViewHolder>(DIFF_CALLBACK) {
+class PostAdapter : ListAdapter<Post, PostAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     companion object {
         private val DIFF_CALLBACK =
@@ -43,8 +40,6 @@ class MyPostAdapter : ListAdapter<Post, MyPostAdapter.ViewHolder>(DIFF_CALLBACK)
     class ViewHolder (
         private val binding: PostItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        val profile = Firebase.firestore
-
         fun bind(item: Post) = with(binding) {
             this.author.text = item.username
             this.title.text = item.title

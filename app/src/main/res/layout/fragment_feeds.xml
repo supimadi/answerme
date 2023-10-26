@@ -1,58 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/round_top"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:padding="32dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chipGroup"
-        android:padding="32dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_1"
-            app:chipIcon="@drawable/baseline_music_note_24"
-            app:chipIconVisible="true"
             style="@style/Widget.Material3.Chip.Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:checkedIconEnabled="false"
             android:checked="false"
-            android:text="Musik"/>
+            android:text="Musik"
+            app:checkedIconEnabled="false"
+            app:chipIcon="@drawable/baseline_music_note_24"
+            app:chipIconVisible="true" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_2"
-            app:chipIcon="@drawable/baseline_local_movies_24"
-            app:chipIconVisible="true"
             style="@style/Widget.Material3.Chip.Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="false"
+            android:text="Film/Series"
             app:checkedIconEnabled="false"
-            android:text="Film/Series"/>
+            app:chipIcon="@drawable/baseline_local_movies_24"
+            app:chipIconVisible="true" />
 
     </com.google.android.material.chip.ChipGroup>
 
-    <TextView
-        android:padding="16dp"
-        android:id="@+id/sampeText"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/myPostRecycleView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="Hello World!"/>
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chipGroup"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:listitem="@layout/post_item" />
+
+    <TextView
+        android:id="@+id/emptyView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/you_have_not_post_a_question"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
+
+    <ProgressBar
+        android:id="@+id/progress_circular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fabNewPost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
         android:layout_gravity="bottom|end"
         android:text="@string/new_post"
         app:icon="@drawable/twotone_loupe_24"
-        style="@style/ThemeOverlay.App.FloatingActionButton"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
