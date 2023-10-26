@@ -47,6 +47,7 @@ class CreatePostFragment : Fragment() {
         val ids: List<Int> = binding.chipGroup.checkedChipIds
         val selectedGenres = mutableListOf<String>()
         val username = settingDataStore.getString("username", "")
+        val avatarUrl = settingDataStore.getString("dicebearLink", "")
 
         ids.forEach {
             selectedGenres.add(
@@ -81,7 +82,8 @@ class CreatePostFragment : Fragment() {
             username = username,
             title = postTitle.toString(),
             question = question.toString(),
-            genres = selectedGenres
+            genres = selectedGenres,
+            avatar = avatarUrl
         )
 
         viewModel.pushPost(newPost)

@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/myPostFragment"
-        android:name="org.d3if3038.answerme.ui.MyPostFragment"
+        android:name="org.d3if3038.answerme.ui.mypost.MyPostFragment"
         android:label="MyPostFragment"
         tools:layout="@layout/fragment_my_post"/>
 

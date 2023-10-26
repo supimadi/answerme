@@ -22,5 +22,7 @@
     <string name="failed_message">%s</string>
     <string name="save_profile">Save Profile</string>
     <string name="post_it">Post It!</string>
+    <string name="you_have_not_post_a_question">You Have Not Post a Question.</string>
+    <string name="by">by</string>
 
 </resources>
