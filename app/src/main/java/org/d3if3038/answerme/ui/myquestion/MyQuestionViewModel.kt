@@ -1,4 +1,4 @@
-package org.d3if3038.answerme.ui.mypost
+package org.d3if3038.answerme.ui.myquestion
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,7 +12,7 @@ import kotlinx.coroutines.withContext
 import org.d3if3038.answerme.model.FetchStatus
 import org.d3if3038.answerme.model.Post
 
-class MyPostViewModel : ViewModel() {
+class MyQuestionViewModel : ViewModel() {
     private val firebaseDb = Firebase.firestore
     private val myPost = MutableLiveData<List<Post>>()
     private val message = MutableLiveData<String>()
@@ -38,6 +38,7 @@ class MyPostViewModel : ViewModel() {
                     querySnapshot.forEach {
                         postBuffer.add(
                             Post(
+                                documentId = it.getString("documentId"),
                                 username = it.getString("username")!!,
                                 title = it.getString("title")!!,
                                 question = it.getString("question")!!,

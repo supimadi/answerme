@@ -1,23 +1,24 @@
-package org.d3if3038.answerme.ui.createpost
+package org.d3if3038.answerme.ui.createquestion
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.chip.Chip
 import org.d3if3038.answerme.data.SettingDataStore
 import org.d3if3038.answerme.data.dataStore
-import org.d3if3038.answerme.databinding.FragmentCreatePostBinding
+import org.d3if3038.answerme.databinding.FragmentCreateQuestionBinding
 import org.d3if3038.answerme.model.Post
 
-class CreatePostFragment : Fragment() {
-    private lateinit var binding: FragmentCreatePostBinding
+class CreateQuestionFragment : Fragment() {
+    private lateinit var binding: FragmentCreateQuestionBinding
 
-    private val viewModel: CreatePostViewModel by lazy {
-        ViewModelProvider(this)[CreatePostViewModel::class.java]
+    private val viewModel: CreateQuestionViewModel by lazy {
+        ViewModelProvider(this)[CreateQuestionViewModel::class.java]
     }
     private val settingDataStore: SettingDataStore by lazy {
         SettingDataStore(requireActivity().dataStore)
@@ -28,9 +29,12 @@ class CreatePostFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentCreatePostBinding.inflate(inflater, container, false)
+        binding = FragmentCreateQuestionBinding.inflate(inflater, container, false)
 
         binding.postButton.setOnClickListener { createPost() }
+
+        val titleBar = requireActivity() as AppCompatActivity
+        titleBar.supportActionBar?.title = "Create Post"
 
         viewModel.getMessage().observe(viewLifecycleOwner) {
             Toast.makeText(

@@ -11,7 +11,7 @@
         <item name="colorSecondaryVariant">@color/red_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimary</item>
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <item name="android:windowLightStatusBar">true</item>
 
         <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox</item>
@@ -21,6 +21,9 @@
         <!-- Menu Bar -->
         <item name="bottomNavigationStyle">@style/Widget.Material3.BottomNavigationView</item>
         <item name="toolbarStyle">@style/Widget.Material3.Toolbar</item>
+
+        <item name="colorPrimaryContainer">?attr/colorPrimary</item>
+        <item name="colorOnPrimaryContainer">?attr/colorOnPrimary</item>
 
         <!-- Extended FAB Style -->
         <item name="extendedFloatingActionButtonStyle">@style/Widget.App.ExtendedFloatingActionButton</item>

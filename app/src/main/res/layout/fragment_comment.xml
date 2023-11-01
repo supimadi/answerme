@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="32dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/round_top"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/questionTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_semibold"
+            android:layout_marginBottom="10dp"
+            tools:text="Judul Pertayaan"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:text="@string/middle_dot"
+            android:textColor="?attr/colorOnPrimary" />
+
+        <TextView
+            android:id="@+id/questionAuthor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:layout_weight="1"
+            android:fontFamily="@font/inter"
+            tools:text="Ahmad Rizal"/>
+
+        <TextView
+            android:id="@+id/questionTimeStamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter"
+            tools:text="40h"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/postText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/commentRecycleView"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/post_item"/>
+
+
+</LinearLayout>

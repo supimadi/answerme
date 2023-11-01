@@ -1,4 +1,4 @@
-package org.d3if3038.answerme.ui.createpost
+package org.d3if3038.answerme.ui.createquestion
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.d3if3038.answerme.model.Post
 
-class CreatePostViewModel : ViewModel() {
+class CreateQuestionViewModel : ViewModel() {
     private val message = MutableLiveData<String>()
     private val firebaseDb = Firebase.firestore
 

@@ -37,6 +37,7 @@ class FeedsViewModel : ViewModel() {
                         querySnapshot.forEach {
                             postBuffer.add(
                                 Post(
+                                    documentId = it.getString("documentId"),
                                     username = it.getString("username")!!,
                                     title = it.getString("title")!!,
                                     question = it.getString("question")!!,

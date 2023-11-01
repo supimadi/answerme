@@ -1,4 +1,4 @@
-package org.d3if3038.answerme.ui.mypost
+package org.d3if3038.answerme.ui.myquestion
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,15 +9,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import org.d3if3038.answerme.data.SettingDataStore
 import org.d3if3038.answerme.data.dataStore
-import org.d3if3038.answerme.databinding.FragmentMyPostBinding
-import org.d3if3038.answerme.adapter.PostAdapter
+import org.d3if3038.answerme.adapter.QuestionAdapter
+import org.d3if3038.answerme.databinding.FragmentMyQuestionBinding
 
-class MyPostFragment : Fragment() {
-    private lateinit var binding: FragmentMyPostBinding
-    private lateinit var myPostAdapter: PostAdapter
+class MyQuestionFragment : Fragment() {
+    private lateinit var binding: FragmentMyQuestionBinding
+    private lateinit var myPostAdapter: QuestionAdapter
 
-    private val viewModel: MyPostViewModel by lazy {
-        ViewModelProvider(this)[MyPostViewModel::class.java]
+    private val viewModel: MyQuestionViewModel by lazy {
+        ViewModelProvider(this)[MyQuestionViewModel::class.java]
     }
     private val settingDataStore: SettingDataStore by lazy {
         SettingDataStore(requireContext().dataStore)
@@ -28,8 +28,8 @@ class MyPostFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentMyPostBinding.inflate(inflater, container, false)
-        myPostAdapter = PostAdapter()
+        binding = FragmentMyQuestionBinding.inflate(inflater, container, false)
+        myPostAdapter = QuestionAdapter()
         val username = settingDataStore.getString("username", "")
 
         viewModel.fetchMyPost(username)

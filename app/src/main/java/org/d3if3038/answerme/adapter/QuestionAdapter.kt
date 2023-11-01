@@ -2,14 +2,19 @@ package org.d3if3038.answerme.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import org.d3if3038.answerme.R
 import org.d3if3038.answerme.databinding.PostItemBinding
 import org.d3if3038.answerme.model.Post
+import org.d3if3038.answerme.ui.feeds.FeedsFragmentDirections
+import org.d3if3038.answerme.ui.myquestion.MyQuestionFragmentDirections
 
-class PostAdapter : ListAdapter<Post, PostAdapter.ViewHolder>(DIFF_CALLBACK) {
+class QuestionAdapter : ListAdapter<Post, QuestionAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     companion object {
         private val DIFF_CALLBACK =
@@ -43,9 +48,33 @@ class PostAdapter : ListAdapter<Post, PostAdapter.ViewHolder>(DIFF_CALLBACK) {
         fun bind(item: Post) = with(binding) {
             this.author.text = item.username
             this.title.text = item.title
-            this.questionText.text = item.question
+            this.postText.text = item.question
 
-            Glide.with(binding.root).load(item.avatar).into(this.profileImage)
+            root.setOnClickListener {
+                val docId = if (item.documentId.isNullOrEmpty()) {
+                    Toast.makeText(
+                        root.context,
+                        root.context.getString(R.string.cannot_find_the_question),
+                        Toast.LENGTH_LONG)
+                        .show()
+                    return@setOnClickListener
+                } else {
+                    item.documentId!!
+                }
+
+                try {
+                    Navigation.findNavController(root).navigate(
+                        MyQuestionFragmentDirections.actionMyPostFragmentToCommentFragment(docId)
+                    )
+                } catch (_: IllegalArgumentException) {
+                    Navigation.findNavController(root).navigate(
+                        FeedsFragmentDirections.actionFeedsFragmentToCommentFragment(docId)
+                    )
+                }
+
+            }
+
+            Glide.with(root).load(item.avatar).into(this.profileImage)
         }
 
     }
