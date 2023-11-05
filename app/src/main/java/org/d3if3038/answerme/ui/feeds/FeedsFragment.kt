@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import org.d3if3038.answerme.R
 import org.d3if3038.answerme.adapter.QuestionAdapter
 import org.d3if3038.answerme.databinding.FragmentFeedsBinding
 
 class FeedsFragment : Fragment() {
     private lateinit var binding: FragmentFeedsBinding
-    private lateinit var postAdapter: QuestionAdapter
+    private lateinit var questionAdapter: QuestionAdapter
 
     private val viewModel: FeedsViewModel by lazy {
         ViewModelProvider(this)[FeedsViewModel::class.java]
@@ -24,11 +25,11 @@ class FeedsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentFeedsBinding.inflate(layoutInflater, container, false)
-        postAdapter = QuestionAdapter()
+        questionAdapter = QuestionAdapter()
 
         binding.fabNewPost.setOnClickListener {
             findNavController().navigate(
-                FeedsFragmentDirections.actionFeedsFragmentToCreatePostFragment()
+                FeedsFragmentDirections.actionFeedPagesToCreateQuestionActivity()
             )
         }
 
@@ -37,14 +38,16 @@ class FeedsFragment : Fragment() {
             binding.emptyView.visibility = if (it.isEmpty()) View.VISIBLE else View.INVISIBLE
             binding.progressCircular.visibility = View.GONE
 
-            postAdapter.submitList(it)
+            questionAdapter.submitList(it)
         }
 
         with(binding.myPostRecycleView) {
-            adapter = postAdapter
+            adapter = questionAdapter
 
             setHasFixedSize(true)
         }
+
+        binding.topBar.topCollapsingToolbarLayout.title = getString(R.string.feeds)
 
         return binding.root
     }

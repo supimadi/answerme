@@ -14,6 +14,8 @@
         tools:targetApi="34">
 
         <activity android:name=".OnBoardingActivity"/>
+        <activity android:name=".ui.comment.CommentActivity"/>
+        <activity android:name=".ui.createquestion.CreateQuestionActivity"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">

@@ -28,5 +28,6 @@
     <string name="create_a_new_post">Create a New Post</string>
     <string name="comment">Comment</string>
     <string name="cannot_find_the_question">Cannot Find The Question.</string>
+    <string name="post">Post!</string>
 
 </resources>

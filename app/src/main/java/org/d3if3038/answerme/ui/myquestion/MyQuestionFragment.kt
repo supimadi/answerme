@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import org.d3if3038.answerme.R
 import org.d3if3038.answerme.data.SettingDataStore
 import org.d3if3038.answerme.data.dataStore
 import org.d3if3038.answerme.adapter.QuestionAdapter
@@ -48,6 +49,8 @@ class MyQuestionFragment : Fragment() {
 
             setHasFixedSize(true)
         }
+
+        binding.topBar.topCollapsingToolbarLayout.title = getString(R.string.my_post)
 
         return binding.root
     }

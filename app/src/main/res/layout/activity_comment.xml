@@ -8,6 +8,10 @@
     android:background="@drawable/round_top"
     android:orientation="vertical">
 
+    <include
+        android:id="@+id/questionTitle2"
+        layout="@layout/title_bar"/>
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -54,11 +58,28 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/commentRecycleView"
-        android:layout_marginTop="20dp"
+        android:layout_marginVertical="20dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/post_item"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/commentInputHint"
+        android:layout_marginEnd="12dp"
+        app:endIconMode="custom"
+        app:endIconDrawable="@drawable/baseline_send_24"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/commenttextinput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/comment"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
 
 
 </LinearLayout>

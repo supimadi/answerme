@@ -64,11 +64,13 @@ class QuestionAdapter : ListAdapter<Post, QuestionAdapter.ViewHolder>(DIFF_CALLB
 
                 try {
                     Navigation.findNavController(root).navigate(
-                        MyQuestionFragmentDirections.actionMyPostFragmentToCommentFragment(docId)
+//                        MyQuestionFragmentDirections.actionMyPostFragmentToCommentFragment(docId)
+                        MyQuestionFragmentDirections.actionMyQuestionPageToCommentActivity(docId)
                     )
                 } catch (_: IllegalArgumentException) {
                     Navigation.findNavController(root).navigate(
-                        FeedsFragmentDirections.actionFeedsFragmentToCommentFragment(docId)
+//                        FeedsFragmentDirections.actionFeedsFragmentToCommentFragment(docId)
+                        FeedsFragmentDirections.actionFeedPagesToCommentActivity(docId)
                     )
                 }
 

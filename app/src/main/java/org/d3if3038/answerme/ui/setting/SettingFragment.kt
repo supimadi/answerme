@@ -35,7 +35,30 @@ class SettingFragment : Fragment() {
             settingDataStore.getString("username", ""),
             settingDataStore.getString("dicebearLink", ""),
         )
+        registerViewModel()
 
+        binding.topBar.topCollapsingToolbarLayout.title = getString(R.string.setting)
+        binding.saveProfileBtn.setOnClickListener {
+            if (!binding.saveProfileBtn.isEnabled) return@setOnClickListener
+
+            val username = binding.usernameInputText.text.toString()
+            if (username.isEmpty()) {
+                Toast.makeText(requireContext(), "Please Enter The Username...", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+            viewModel.saveProfile(
+                Profile(
+                    username = username,
+                    diceBear = "https://api.dicebear.com/7.x/adventurer/png?backgroundColor=b6e3f4,c0aede,d1d4f9&seed=${username}"
+                )
+            )
+        }
+
+        return binding.root
+    }
+
+    private fun  registerViewModel() {
         viewModel.getProfile().observe(viewLifecycleOwner) {
             settingDataStore.putString("username", it.username)
             settingDataStore.putString("dicebearLink", it.diceBear)
@@ -53,23 +76,6 @@ class SettingFragment : Fragment() {
                 Toast.LENGTH_LONG)
                 .show()
         }
-
-        binding.saveProfileBtn.setOnClickListener {
-            val username = binding.usernameInputText.text.toString()
-            if (username.isEmpty()) {
-                Toast.makeText(requireContext(), "Please Enter The Username...", Toast.LENGTH_LONG).show()
-                return@setOnClickListener
-            }
-
-            viewModel.saveProfile(
-                Profile(
-                    username = username,
-                    diceBear = "https://api.dicebear.com/7.x/adventurer/png?backgroundColor=b6e3f4,c0aede,d1d4f9&seed=${username}"
-                )
-            )
-        }
-
-        return binding.root
     }
 
     private fun updateProfileUI(username: String, dicebearUrl: String) {

@@ -1,50 +1,50 @@
 package org.d3if3038.answerme.ui.createquestion
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.chip.Chip
+import org.d3if3038.answerme.R
 import org.d3if3038.answerme.data.SettingDataStore
 import org.d3if3038.answerme.data.dataStore
-import org.d3if3038.answerme.databinding.FragmentCreateQuestionBinding
+import org.d3if3038.answerme.databinding.ActivityCreateQuestionBinding
 import org.d3if3038.answerme.model.Post
 
-class CreateQuestionFragment : Fragment() {
-    private lateinit var binding: FragmentCreateQuestionBinding
+class CreateQuestionActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityCreateQuestionBinding
 
     private val viewModel: CreateQuestionViewModel by lazy {
         ViewModelProvider(this)[CreateQuestionViewModel::class.java]
     }
     private val settingDataStore: SettingDataStore by lazy {
-        SettingDataStore(requireActivity().dataStore)
+        SettingDataStore(this.dataStore)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentCreateQuestionBinding.inflate(inflater, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityCreateQuestionBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
 
         binding.postButton.setOnClickListener { createPost() }
 
-        val titleBar = requireActivity() as AppCompatActivity
-        titleBar.supportActionBar?.title = "Create Post"
+        with(binding.topBar) {
+            topCollapsingToolbarLayout.title = getString(R.string.create_a_new_post)
+            topAppBar.setNavigationIcon(R.drawable.baseline_close_24)
+            topAppBar.setNavigationOnClickListener {
+                finish()
+            }
+        }
 
-        viewModel.getMessage().observe(viewLifecycleOwner) {
+
+        viewModel.getMessage().observe(this) {
             Toast.makeText(
-                requireContext(),
+                applicationContext,
                 it,
                 Toast.LENGTH_LONG
             ).show()
         }
-
-        return binding.root
     }
 
     private fun createPost() {
@@ -63,22 +63,22 @@ class CreateQuestionFragment : Fragment() {
         val question = binding.questionTextInput.text
 
         if (selectedGenres.isEmpty()) {
-            Toast.makeText(requireContext(), "Genre(s) is Required!", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Genre(s) is Required!", Toast.LENGTH_LONG).show()
             return
         }
 
         if (postTitle.isNullOrEmpty()) {
-            Toast.makeText(requireContext(), "Post Title is Required!", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Post Title is Required!", Toast.LENGTH_LONG).show()
             return
         }
 
         if (question.isNullOrEmpty()) {
-            Toast.makeText(requireContext(), "Question is Required!", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Question is Required!", Toast.LENGTH_LONG).show()
             return
         }
 
         if (username.isEmpty()) {
-            Toast.makeText(requireContext(), "Enter Your Username First in Setting!", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Enter Your Username First in Setting!", Toast.LENGTH_LONG).show()
             return
         }
 

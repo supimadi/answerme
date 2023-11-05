@@ -3,55 +3,52 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/feedsFragment">
+    app:startDestination="@id/feedPages">
 
     <fragment
-        android:id="@+id/feedsFragment"
+        android:id="@+id/feedPages"
         android:name="org.d3if3038.answerme.ui.feeds.FeedsFragment"
         android:label="@string/feeds"
         tools:layout="@layout/fragment_feeds">
         <action
-            android:id="@+id/action_feedsFragment_to_createPostFragment"
-            app:destination="@id/createPostFragment" />
+            android:id="@+id/action_feedPages_to_commentActivity"
+            app:destination="@id/commentActivity" />
         <action
-            android:id="@+id/action_feedsFragment_to_commentFragment"
-            app:destination="@id/commentFragment" />
+            android:id="@+id/action_feedPages_to_createQuestionActivity"
+            app:destination="@id/createQuestionActivity" />
     </fragment>
 
     <fragment
-        android:id="@+id/settingFragment"
+        android:id="@+id/settingPage"
         android:name="org.d3if3038.answerme.ui.setting.SettingFragment"
         android:label="@string/setting"
         tools:layout="@layout/fragment_setting"/>
 
     <fragment
-        android:id="@+id/myPostFragment"
+        android:id="@+id/myQuestionPage"
         android:name="org.d3if3038.answerme.ui.myquestion.MyQuestionFragment"
         android:label="@string/my_post"
         tools:layout="@layout/fragment_my_question">
         <action
-            android:id="@+id/action_myPostFragment_to_commentFragment"
-            app:destination="@id/commentFragment" />
+            android:id="@+id/action_myQuestionPage_to_commentActivity"
+            app:destination="@id/commentActivity" />
     </fragment>
 
-    <fragment
-        android:id="@+id/createPostFragment"
-        android:name="org.d3if3038.answerme.ui.createquestion.CreateQuestionFragment"
-        android:label="@string/create_a_new_post"
-        tools:layout="@layout/fragment_create_question"/>
 
-    <action
-        android:id="@+id/to_commentFragment"
-        app:destination="@id/commentFragment"/>
-
-    <fragment
-        android:id="@+id/commentFragment"
-        android:name="org.d3if3038.answerme.ui.comment.CommentFragment"
-        android:label="@string/comment"
-        tools:layout="@layout/fragment_comment">
+    <activity
+        android:id="@+id/commentActivity"
+        android:name="org.d3if3038.answerme.ui.comment.CommentActivity"
+        android:label="CommentActivity"
+        tools:layout="@layout/activity_comment">
         <argument
             android:name="documentId"
             app:argType="string" />
-    </fragment>
+    </activity>
+
+    <activity
+        android:id="@+id/createQuestionActivity"
+        android:name="org.d3if3038.answerme.ui.createquestion.CreateQuestionActivity"
+        android:label="CreateQuestionActivity"
+        tools:layout="@layout/activity_create_question"/>
 
 </navigation>

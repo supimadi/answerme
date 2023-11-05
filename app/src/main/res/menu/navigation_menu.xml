@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menuMyPost"
+        android:id="@+id/myQuestionPage"
         android:enabled="true"
         android:icon="@drawable/baseline_home_24"
         android:title="@string/my_post"/>
 
     <item
-        android:id="@+id/menuFeeds"
+        android:id="@+id/feedPages"
         android:enabled="true"
         android:icon="@drawable/baseline_markunread_mailbox_24"
         android:title="@string/feeds"/>
 
     <item
-        android:id="@+id/menuSetting"
+        android:id="@+id/settingPage"
         android:enabled="true"
         android:icon="@drawable/baseline_person_24"
         android:title="@string/setting"/>

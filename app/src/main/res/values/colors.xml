@@ -11,6 +11,8 @@
     <color name="teal_200_light">#D0EDFF</color>
     <color name="teal_700_dark">#28434E</color>
 
+    <color name="transparent">#00000000</color>
+
     <color name="red_200">#E8909E</color>
     <color name="red_500">#EC4B66</color>
     <color name="red_700">#69212D</color>

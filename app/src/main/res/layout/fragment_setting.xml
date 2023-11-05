@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:background="@drawable/round_top"
+    android:background="?attr/colorPrimaryVariant"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include
+        android:id="@+id/topBar"
+        layout="@layout/title_bar" />
+
     <LinearLayout
+        android:background="@drawable/round_top"
         android:paddingTop="32dp"
         android:paddingHorizontal="32dp"
-        android:layout_width="match_parent"
         android:orientation="vertical"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileImage"
@@ -51,4 +57,4 @@
     </LinearLayout>
 
 
-</ScrollView>
+</LinearLayout>
