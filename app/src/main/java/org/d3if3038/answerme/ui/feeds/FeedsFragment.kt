@@ -1,12 +1,14 @@
 package org.d3if3038.answerme.ui.feeds
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.chip.Chip
 import org.d3if3038.answerme.R
 import org.d3if3038.answerme.adapter.QuestionAdapter
 import org.d3if3038.answerme.databinding.FragmentFeedsBinding
@@ -33,7 +35,7 @@ class FeedsFragment : Fragment() {
             )
         }
 
-        viewModel.fetchMyPost()
+        viewModel.getFeeds()
         viewModel.getPosts().observe(viewLifecycleOwner) {
             binding.emptyView.visibility = if (it.isEmpty()) View.VISIBLE else View.INVISIBLE
             binding.progressCircular.visibility = View.GONE
@@ -41,13 +43,24 @@ class FeedsFragment : Fragment() {
             questionAdapter.submitList(it)
         }
 
-        with(binding.myPostRecycleView) {
-            adapter = questionAdapter
+        binding.chipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
+            val genres = mutableListOf<String>()
 
-            setHasFixedSize(true)
+            checkedIds.forEach {
+                genres.add(
+                    group.findViewById<Chip>(it).text.toString()
+                )
+            }
+
+            viewModel.getFeeds(genres)
         }
 
-        binding.topBar.topCollapsingToolbarLayout.title = getString(R.string.feeds)
+
+        with(binding) {
+            myPostRecycleView.adapter = questionAdapter
+            topBar.topCollapsingToolbarLayout.title = getString(R.string.feeds)
+        }
+
 
         return binding.root
     }

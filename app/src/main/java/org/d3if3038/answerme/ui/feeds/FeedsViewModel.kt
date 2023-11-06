@@ -1,9 +1,13 @@
 package org.d3if3038.answerme.ui.feeds
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
@@ -23,28 +27,51 @@ class FeedsViewModel : ViewModel() {
     fun getFethcStatus(): LiveData<FetchStatus> = fetchStatus
     fun getMessages(): LiveData<String> = message
 
-    fun fetchMyPost() {
+    fun getFeeds(category: List<String>? = null) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 fetchStatus.postValue(FetchStatus.LOADING)
 
-                firebaseDb.collection("posts")
-                    .get()
-                    .addOnSuccessListener { querySnapshot ->
-                        val postBuffer = mutableListOf<Post>()
+                val docPost = if (category.isNullOrEmpty()) {
+                    fetchQuestion(firebaseDb.collection("posts"))
+                } else {
+                    fetchQuestion(
+                        firebaseDb.collection("posts"),
+                        category
+                    )
+                }
 
-                        querySnapshot.forEach { doc ->
+                docPost
+                    .addOnSuccessListener {
+                        val postBuffer = mutableListOf<Post>()
+//
+                        it.forEach { doc ->
                             postBuffer.add(doc.toObject(Post::class.java))
                         }
 
                         posts.value = postBuffer
                         fetchStatus.postValue(FetchStatus.SUCCESS)
+
                     }
                     .addOnFailureListener {
                         message.value = it.message!!.split(".")[0]
                         fetchStatus.postValue(FetchStatus.FAILED)
                     }
+
             }
         }
+    }
+
+    private fun fetchQuestion(firebaseCollection: CollectionReference) = firebaseCollection.get()
+
+    private fun fetchQuestion(
+        firebaseCollection: CollectionReference,
+        category: List<String>
+    ) : Task<QuerySnapshot> {
+
+        return firebaseCollection
+            .whereArrayContainsAny("genres", category)
+            .get()
+
     }
 }

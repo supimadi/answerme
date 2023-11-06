@@ -39,7 +39,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="false"
-                    android:text="Musik"
+                    android:text="Music"
                     app:checkedIconEnabled="false"
                     app:chipIcon="@drawable/baseline_music_note_24"
                     app:chipIconVisible="true" />

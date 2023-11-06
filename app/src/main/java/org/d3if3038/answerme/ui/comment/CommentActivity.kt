@@ -1,5 +1,6 @@
 package org.d3if3038.answerme.ui.comment
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.View
@@ -56,13 +57,13 @@ class CommentActivity : AppCompatActivity() {
         viewModel.getCommentPostStatus().observe(this) {
             if (it != FetchStatus.SUCCESS) return@observe
 
-            binding.commenttextinput.clearFocus()
-            binding.commenttextinput.setText("")
-
-            this.currentFocus?.let { view ->
-                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            currentFocus?.let { view ->
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
                 imm?.hideSoftInputFromWindow(view.windowToken, 0)
             }
+
+            binding.commenttextinput.clearFocus()
+            binding.commenttextinput.setText("")
         }
         viewModel.fetchQuestion(postArgs.documentId)
 
