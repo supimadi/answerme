@@ -9,13 +9,16 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.d3if3038.answerme.model.FetchStatus
 import org.d3if3038.answerme.model.Post
 
 class CreateQuestionViewModel : ViewModel() {
     private val message = MutableLiveData<String>()
+    private val postStatus = MutableLiveData<FetchStatus>()
     private val firebaseDb = Firebase.firestore
 
     fun getMessage(): LiveData<String> = message
+    fun getStatus(): LiveData<FetchStatus> = postStatus
 
     fun pushPost(post: Post) {
         viewModelScope.launch {
@@ -30,6 +33,7 @@ class CreateQuestionViewModel : ViewModel() {
                     }
                     .addOnSuccessListener {
                         message.postValue("Success Post a New Question!")
+                        postStatus.postValue(FetchStatus.SUCCESS)
                     }
             }
         }

@@ -1,8 +1,12 @@
 package org.d3if3038.answerme.model
 
+import java.io.Serializable
+
 data class Comment(
-    val md5: String,
-    val commentText: String,
-    val username: String,
-    val avatarUrl: String,
-)
+    var md5: String = "",
+    var commentText: String = "",
+    var username: String = "",
+    var avatarUrl: String = "",
+    var timeStamp: Long = System.currentTimeMillis(),
+    var timeElapsed: Long = System.nanoTime()
+) : Serializable

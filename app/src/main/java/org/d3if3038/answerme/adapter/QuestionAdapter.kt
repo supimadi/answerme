@@ -13,6 +13,9 @@ import org.d3if3038.answerme.databinding.PostItemBinding
 import org.d3if3038.answerme.model.Post
 import org.d3if3038.answerme.ui.feeds.FeedsFragmentDirections
 import org.d3if3038.answerme.ui.myquestion.MyQuestionFragmentDirections
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class QuestionAdapter : ListAdapter<Post, QuestionAdapter.ViewHolder>(DIFF_CALLBACK) {
 
@@ -50,6 +53,22 @@ class QuestionAdapter : ListAdapter<Post, QuestionAdapter.ViewHolder>(DIFF_CALLB
             this.title.text = item.title
             this.postText.text = item.question
 
+//            val elapsedTime = System.currentTimeMillis() - item.timeStamp
+//            val elapsedDay = TimeUnit.MILLISECONDS.toDays(elapsedTime)
+            val date = SimpleDateFormat("dd/MM", Locale("en", "US"))
+
+            this.timeStampText.text = date.format(Date(item.timeStamp))
+
+//            @SuppressLint("SetTextI18n")
+//            if(elapsedDay > 7) {
+//                this.timeStampText.text = "${elapsedDay / 7} w"
+//            } else if (elapsedDay > 1) {
+//                this.timeStampText.text = "$elapsedDay d"
+//            } else {
+//                this.timeStampText.text = "${TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - item.timeStamp)} m"
+//            }
+
+
             root.setOnClickListener {
                 val docId = if (item.documentId.isNullOrEmpty()) {
                     Toast.makeText(
@@ -64,12 +83,10 @@ class QuestionAdapter : ListAdapter<Post, QuestionAdapter.ViewHolder>(DIFF_CALLB
 
                 try {
                     Navigation.findNavController(root).navigate(
-//                        MyQuestionFragmentDirections.actionMyPostFragmentToCommentFragment(docId)
                         MyQuestionFragmentDirections.actionMyQuestionPageToCommentActivity(docId)
                     )
                 } catch (_: IllegalArgumentException) {
                     Navigation.findNavController(root).navigate(
-//                        FeedsFragmentDirections.actionFeedsFragmentToCommentFragment(docId)
                         FeedsFragmentDirections.actionFeedPagesToCommentActivity(docId)
                     )
                 }

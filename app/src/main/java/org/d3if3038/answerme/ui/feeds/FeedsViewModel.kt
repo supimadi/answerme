@@ -33,18 +33,8 @@ class FeedsViewModel : ViewModel() {
                     .addOnSuccessListener { querySnapshot ->
                         val postBuffer = mutableListOf<Post>()
 
-                        @Suppress("UNCHECKED_CAST")
-                        querySnapshot.forEach {
-                            postBuffer.add(
-                                Post(
-                                    documentId = it.getString("documentId"),
-                                    username = it.getString("username")!!,
-                                    title = it.getString("title")!!,
-                                    question = it.getString("question")!!,
-                                    genres = it.get("genres") as List<String>,
-                                    avatar = it.getString("avatar")!!
-                                )
-                            )
+                        querySnapshot.forEach { doc ->
+                            postBuffer.add(doc.toObject(Post::class.java))
                         }
 
                         posts.value = postBuffer

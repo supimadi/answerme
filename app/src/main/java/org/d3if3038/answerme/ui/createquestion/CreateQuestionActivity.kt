@@ -9,6 +9,7 @@ import org.d3if3038.answerme.R
 import org.d3if3038.answerme.data.SettingDataStore
 import org.d3if3038.answerme.data.dataStore
 import org.d3if3038.answerme.databinding.ActivityCreateQuestionBinding
+import org.d3if3038.answerme.model.FetchStatus
 import org.d3if3038.answerme.model.Post
 
 class CreateQuestionActivity : AppCompatActivity() {
@@ -44,6 +45,10 @@ class CreateQuestionActivity : AppCompatActivity() {
                 it,
                 Toast.LENGTH_LONG
             ).show()
+        }
+        viewModel.getStatus().observe(this) {
+            if (it == FetchStatus.SUCCESS)
+                finish()
         }
     }
 

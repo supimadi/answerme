@@ -46,6 +46,7 @@ class CommentAdapter : ListAdapter<Comment, CommentAdapter.ViewHolder>(DIFF_CALL
             this.author.text = item.username
             this.postText.text = item.commentText
 
+            this.separator.visibility = View.GONE
             this.title.visibility = View.GONE
 
             Glide.with(binding.root).load(item.avatarUrl).into(this.profileImage)

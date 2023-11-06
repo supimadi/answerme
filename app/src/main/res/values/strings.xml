@@ -29,5 +29,6 @@
     <string name="comment">Comment</string>
     <string name="cannot_find_the_question">Cannot Find The Question.</string>
     <string name="post">Post!</string>
+    <string name="people_not_comment_on_this_question_yet">People Not Comment\nOn This Question Yet.</string>
 
 </resources>

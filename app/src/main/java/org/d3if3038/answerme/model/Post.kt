@@ -1,12 +1,18 @@
 package org.d3if3038.answerme.model
 
+import androidx.annotation.Keep
+import java.io.Serializable
+
+
 data class Post(
     var documentId: String? = null,
-    val username: String,
-    val avatar: String,
-    val title: String,
-    val genres: List<String>,
-    val question: String,
-    val comments: List<Comment>? = null,
-    val deleted: Boolean = false,
-)
+    var username: String = "",
+    var avatar: String = "",
+    var title: String = "",
+    var genres: List<String> = mutableListOf(""),
+    var question: String = "",
+    var comments: List<Comment>? = null,
+    var deleted: Boolean = false,
+    var timeStamp: Long = System.currentTimeMillis(),
+    var timeElapsed: Long = System.nanoTime()
+) : Serializable
