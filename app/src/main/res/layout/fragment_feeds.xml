@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <include
         android:id="@+id/topBar"
         layout="@layout/title_bar"
@@ -25,37 +26,90 @@
         app:layout_constraintTop_toBottomOf="@id/topBar"
         app:layout_constraintBottom_toBottomOf="parent">
 
+        <Button
+            android:id="@+id/refreshButton"
+            style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/baseline_refresh_24"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="@string/new_post"/>
+
+        <HorizontalScrollView
+            android:id="@+id/chipGroupLayout"
+            android:scrollbars="none"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/chipGroup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_1"
+                    android:id="@+id/chipMusic"
                     style="@style/Widget.Material3.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="false"
-                    android:text="Music"
-                    app:checkedIconEnabled="false"
                     app:chipIcon="@drawable/baseline_music_note_24"
-                    app:chipIconVisible="true" />
+                    app:checkedIconEnabled="false"
+                    app:chipIconVisible="true"
+                    android:text="@string/music"/>
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_2"
+                    android:id="@+id/chipFilm"
                     style="@style/Widget.Material3.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:text="Film/Series"
-                    app:checkedIconEnabled="false"
                     app:chipIcon="@drawable/baseline_local_movies_24"
-                    app:chipIconVisible="true" />
+                    app:chipIconVisible="true"
+                    app:checkedIconEnabled="false"
+                    android:checked="false"
+                    android:text="@string/film_series"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipGame"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:chipIcon="@drawable/baseline_videogame_asset_24"
+                    app:chipIconVisible="true"
+                    android:checked="false"
+                    app:checkedIconEnabled="false"
+                    android:text="@string/game"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipInfo"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:chipIcon="@drawable/baseline_info_24"
+                    app:chipIconVisible="true"
+                    android:checked="false"
+                    app:checkedIconEnabled="false"
+                    android:text="@string/info"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipStudy"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:chipIcon="@drawable/baseline_draw_24"
+                    app:chipIconVisible="true"
+                    android:checked="false"
+                    app:checkedIconEnabled="false"
+                    android:text="@string/study"/>
 
             </com.google.android.material.chip.ChipGroup>
+
+        </HorizontalScrollView>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/myPostRecycleView"
@@ -67,7 +121,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/chipGroup"
+                app:layout_constraintTop_toBottomOf="@+id/chipGroupLayout"
                 tools:listitem="@layout/post_item" />
 
             <TextView
@@ -75,13 +129,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/you_have_not_post_a_question"
+                android:text="@string/there_is_no_post"
                 android:textStyle="bold"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
+                app:layout_constraintTop_toBottomOf="@+id/chipGroupLayout" />
 
             <ProgressBar
                 android:id="@+id/progress_circular"
@@ -91,7 +145,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
+                app:layout_constraintTop_toBottomOf="@+id/chipGroupLayout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

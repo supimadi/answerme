@@ -20,7 +20,7 @@
             app:collapsedTitleTextColor="?attr/colorSurface"
             app:contentScrim="?attr/colorPrimaryVariant"
             app:expandedTitleTextColor="?attr/colorSurface"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+            app:layout_scrollFlags="scroll|snap|enterAlwaysCollapsed"
             app:titleTextColor="?attr/colorSurface">
 
             <com.google.android.material.appbar.MaterialToolbar

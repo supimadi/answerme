@@ -89,6 +89,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/titleInputHint"
             android:layout_marginBottom="16dp"
+            app:counterEnabled="true"
+            app:counterMaxLength="15"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -103,6 +105,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/questionInputHint"
             android:layout_marginBottom="16dp"
+            app:counterEnabled="true"
+            app:counterMaxLength="150"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

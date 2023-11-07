@@ -30,5 +30,8 @@
     <string name="cannot_find_the_question">Cannot Find The Question.</string>
     <string name="post">Post!</string>
     <string name="people_not_comment_on_this_question_yet">People Not Comment\nOn This Question Yet.</string>
+    <string name="there_is_no_post">There Is no Post.</string>
+    <string name="title_can_t_be_more_than_20_character">Title Can\'t Be More Than 15 Character.</string>
+    <string name="question_can_t_be_more_than_150_character">Question Can\'t Be More Than 150 Character.</string>
 
 </resources>

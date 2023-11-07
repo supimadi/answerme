@@ -1,6 +1,5 @@
 package org.d3if3038.answerme.ui.feeds
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,10 +21,28 @@ class FeedsViewModel : ViewModel() {
     private val posts = MutableLiveData<List<Post>>()
     private val fetchStatus = MutableLiveData<FetchStatus>()
     private val message = MutableLiveData<String>()
+    private val isNewPost = MutableLiveData(false)
+
+    private val COLLECTION_NAME = "posts"
 
     fun getPosts(): LiveData<List<Post>> = posts
     fun getFethcStatus(): LiveData<FetchStatus> = fetchStatus
     fun getMessages(): LiveData<String> = message
+    fun getnewPostNotif(): LiveData<Boolean> = isNewPost
+
+    fun connectRealtimeDb() {
+        firebaseDb.collection(COLLECTION_NAME)
+            .addSnapshotListener { value, error ->
+                if (error != null) {
+                    message.postValue("There Something Wrong...")
+                    return@addSnapshotListener
+                }
+
+                if (value == null || value.isEmpty) return@addSnapshotListener
+
+                isNewPost.postValue(true)
+            }
+    }
 
     fun getFeeds(category: List<String>? = null) {
         viewModelScope.launch {
@@ -33,10 +50,10 @@ class FeedsViewModel : ViewModel() {
                 fetchStatus.postValue(FetchStatus.LOADING)
 
                 val docPost = if (category.isNullOrEmpty()) {
-                    fetchQuestion(firebaseDb.collection("posts"))
+                    fetchQuestion(firebaseDb.collection(COLLECTION_NAME))
                 } else {
                     fetchQuestion(
-                        firebaseDb.collection("posts"),
+                        firebaseDb.collection(COLLECTION_NAME),
                         category
                     )
                 }
@@ -44,14 +61,15 @@ class FeedsViewModel : ViewModel() {
                 docPost
                     .addOnSuccessListener {
                         val postBuffer = mutableListOf<Post>()
-//
+
                         it.forEach { doc ->
                             postBuffer.add(doc.toObject(Post::class.java))
                         }
 
-                        posts.value = postBuffer
+                        isNewPost.postValue(false)
                         fetchStatus.postValue(FetchStatus.SUCCESS)
 
+                        posts.value = postBuffer
                     }
                     .addOnFailureListener {
                         message.value = it.message!!.split(".")[0]

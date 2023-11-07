@@ -1,18 +1,11 @@
 package org.d3if3038.answerme.ui.comment
 
-import android.app.Activity
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.ViewUtils
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.navArgs
-import com.google.android.material.internal.ViewUtils.hideKeyboard
 import org.d3if3038.answerme.R
 import org.d3if3038.answerme.adapter.CommentAdapter
 import org.d3if3038.answerme.data.SettingDataStore
@@ -44,6 +37,7 @@ class CommentActivity : AppCompatActivity() {
 
         with(binding) {
             commentRecycleView.adapter = commentAdapter
+            commentRecycleView.isNestedScrollingEnabled = false
             topBar.topAppBar.setNavigationIcon(R.drawable.baseline_close_24)
             topBar.topAppBar.setNavigationOnClickListener { finish() }
 

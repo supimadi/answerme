@@ -1,10 +1,13 @@
 package org.d3if3038.answerme.ui.createquestion
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.chip.Chip
+import com.google.android.material.transition.MaterialContainerTransform
 import org.d3if3038.answerme.R
 import org.d3if3038.answerme.data.SettingDataStore
 import org.d3if3038.answerme.data.dataStore
@@ -14,6 +17,9 @@ import org.d3if3038.answerme.model.Post
 
 class CreateQuestionActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCreateQuestionBinding
+
+    private var questionValid = true
+    private var titleValid = true
 
     private val viewModel: CreateQuestionViewModel by lazy {
         ViewModelProvider(this)[CreateQuestionViewModel::class.java]
@@ -29,6 +35,14 @@ class CreateQuestionActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.postButton.setOnClickListener { createPost() }
+        binding.titleTextInput.addTextChangedListener { text ->
+            if (text.isNullOrEmpty()) return@addTextChangedListener
+            checkTitleLength()
+        }
+        binding.questionTextInput.addTextChangedListener { text ->
+            if (text.isNullOrEmpty()) return@addTextChangedListener
+            checkQuestionLength()
+        }
 
         with(binding.topBar) {
             topCollapsingToolbarLayout.title = getString(R.string.create_a_new_post)
@@ -50,6 +64,29 @@ class CreateQuestionActivity : AppCompatActivity() {
             if (it == FetchStatus.SUCCESS)
                 finish()
         }
+    }
+
+    private fun checkTitleLength() = with(binding.titleInputHint) {
+        if (binding.titleTextInput.length() > 15) {
+            this.isErrorEnabled = true
+            this.error = context.getString(R.string.title_can_t_be_more_than_20_character)
+            titleValid = false
+        } else {
+            this.isErrorEnabled = false
+            titleValid = true
+        }
+    }
+
+    private fun checkQuestionLength() = with(binding.questionInputHint) {
+        if (binding.questionTextInput.length() > 150) {
+            this.isErrorEnabled = true
+            this.error = context.getString(R.string.question_can_t_be_more_than_150_character)
+            questionValid = false
+        } else {
+            this.isErrorEnabled = false
+            questionValid = true
+        }
+
     }
 
     private fun createPost() {
@@ -84,6 +121,11 @@ class CreateQuestionActivity : AppCompatActivity() {
 
         if (username.isEmpty()) {
             Toast.makeText(this, "Enter Your Username First in Setting!", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        if (!titleValid || !questionValid) {
+            Toast.makeText(this, "There is a problems, fix it please...", Toast.LENGTH_LONG).show()
             return
         }
 
