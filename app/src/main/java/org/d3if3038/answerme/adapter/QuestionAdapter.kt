@@ -1,5 +1,7 @@
 package org.d3if3038.answerme.adapter
 
+import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -16,6 +18,7 @@ import org.d3if3038.answerme.ui.myquestion.MyQuestionFragmentDirections
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 class QuestionAdapter : ListAdapter<Post, QuestionAdapter.ViewHolder>(DIFF_CALLBACK) {
 
@@ -48,26 +51,22 @@ class QuestionAdapter : ListAdapter<Post, QuestionAdapter.ViewHolder>(DIFF_CALLB
     class ViewHolder (
         private val binding: PostItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bind(item: Post) = with(binding) {
             this.author.text = item.username
             this.title.text = item.title
             this.postText.text = item.question
 
-//            val elapsedTime = System.currentTimeMillis() - item.timeStamp
-//            val elapsedDay = TimeUnit.MILLISECONDS.toDays(elapsedTime)
-            val date = SimpleDateFormat("dd/MM", Locale("en", "US"))
+            val dateDiff =  TimeUnit.DAYS.convert(
+                System.currentTimeMillis() - item.timeStamp,
+                TimeUnit.MILLISECONDS
+            )
 
-            this.timeStampText.text = date.format(Date(item.timeStamp))
-
-//            @SuppressLint("SetTextI18n")
-//            if(elapsedDay > 7) {
-//                this.timeStampText.text = "${elapsedDay / 7} w"
-//            } else if (elapsedDay > 1) {
-//                this.timeStampText.text = "$elapsedDay d"
-//            } else {
-//                this.timeStampText.text = "${TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - item.timeStamp)} m"
-//            }
-
+            if (dateDiff > 7) {
+                this.timeStampText.text = "${dateDiff / 7} w"
+            } else {
+                this.timeStampText.text = "$dateDiff d"
+            }
 
             root.setOnClickListener {
                 val docId = if (item.documentId.isNullOrEmpty()) {

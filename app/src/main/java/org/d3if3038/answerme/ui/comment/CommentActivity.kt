@@ -1,6 +1,7 @@
 package org.d3if3038.answerme.ui.comment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
@@ -45,6 +46,9 @@ class CommentActivity : AppCompatActivity() {
         }
 
 
+        binding.commentRecycleView.setOnScrollChangeListener { view, i, i2, i3, i4 ->
+            Log.d("SCROLL_VALUE", "${i}, ${i2}, ${i3}, ${i4}")
+        }
 
         viewModel.getPost().observe(this) { updatePostUI(it) }
         viewModel.getComments().observe(this) { commentAdapter.submitList(it) }
