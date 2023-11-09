@@ -1,44 +1,60 @@
 package org.d3if3038.answerme
 
+import android.app.ActivityManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.view.Window
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import com.google.android.material.transition.platform.MaterialContainerTransform
-import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import org.d3if3038.answerme.data.SettingDataStore
 import org.d3if3038.answerme.data.dataStore
 import org.d3if3038.answerme.databinding.ActivityMainBinding
+import org.d3if3038.answerme.service.CommentNotifService
+import org.d3if3038.answerme.service.RestarterCommentNotif
 
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var binding: ActivityMainBinding
+    private lateinit var commentNotifService: CommentNotifService
+    private lateinit var commentServiceIntent: Intent
 
     private val settingDataStore: SettingDataStore by lazy {
         SettingDataStore(applicationContext.dataStore)
     }
 
+    companion object {
+        const val COMMENT_NOTIF_CHANNEL_ID = "commentNotif"
+        const val PERMISSION_REQUEST_CODE = 1
+    }
+
+    private fun isMyServiceRunning(serviceClass: Class<*>): Boolean {
+        val manager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
+        for (service in manager.getRunningServices(Int.MAX_VALUE)) {
+            if (serviceClass.name == service.service.className) {
+                Log.i("Service status", "Running")
+                return true
+            }
+        }
+        Log.i("Service status", "Not running")
+        return false
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Enable Activity Transitions. Optionally enable Activity transitions in your
-        // theme with <item name=”android:windowActivityTransitions”>true</item>.
-        window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
-
-        // Attach a callback used to capture the shared elements from this Activity to be used
-        // by the container transform transition
-        setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
-
-        // Keep system bars (status bar, navigation bar) persistent throughout the transition.
-        window.sharedElementsUseOverlay = false
-
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-
         setContentView(binding.root)
+
+        commentNotifService = CommentNotifService()
+        commentServiceIntent = Intent(this, CommentNotifService::class.java)
+
+        if (!isMyServiceRunning(CommentNotifService::class.java)) {
+            startService(commentServiceIntent)
+        }
 
         if (!settingDataStore.getBoolean("is_boarded", false)) {
             startActivity(Intent(this, OnBoardingActivity::class.java))
@@ -49,5 +65,26 @@ class MainActivity : AppCompatActivity() {
 
         binding.bottomNavigation.selectedItemId = R.id.feedPages
         NavigationUI.setupWithNavController(binding.bottomNavigation, navController)
+
+        val name = "Notification" //getString(R.string.channel_name)
+        val importance = NotificationManager.IMPORTANCE_HIGH
+
+        val channel = NotificationChannel(COMMENT_NOTIF_CHANNEL_ID, name, importance)
+//            channel.description = getString(R.string.channel_desc)
+        channel.description = "Notification Channel"
+
+        val manager = getSystemService(Context.NOTIFICATION_SERVICE)
+                as NotificationManager?
+        manager?.createNotificationChannel(channel)
+    }
+
+    override fun onDestroy() {
+        val broadcastIntent = Intent()
+        broadcastIntent.action = "restartservice"
+        broadcastIntent.setClass(this, RestarterCommentNotif::class.java)
+
+        sendBroadcast(broadcastIntent)
+
+        super.onDestroy()
     }
 }

@@ -30,7 +30,12 @@ class FeedsViewModel : ViewModel() {
     fun getMessages(): LiveData<String> = message
     fun getnewPostNotif(): LiveData<Boolean> = isNewPost
 
-    fun connectRealtimeDb() {
+    init {
+        connectRealtimeDb()
+        getFeeds()
+    }
+
+    private fun connectRealtimeDb() {
         firebaseDb.collection(COLLECTION_NAME)
             .addSnapshotListener { value, error ->
                 if (error != null) {
@@ -40,7 +45,7 @@ class FeedsViewModel : ViewModel() {
 
                 if (value == null || value.isEmpty) return@addSnapshotListener
 
-                isNewPost.postValue(true)
+                isNewPost.value = true
             }
     }
 

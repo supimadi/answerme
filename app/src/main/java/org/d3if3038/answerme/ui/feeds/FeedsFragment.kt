@@ -1,14 +1,19 @@
 package org.d3if3038.answerme.ui.feeds
 
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
 import com.google.android.material.transition.MaterialContainerTransform
+import org.d3if3038.answerme.MainActivity
 import org.d3if3038.answerme.R
 import org.d3if3038.answerme.adapter.QuestionAdapter
 import org.d3if3038.answerme.databinding.FragmentFeedsBinding
@@ -40,8 +45,6 @@ class FeedsFragment : Fragment() {
             )
         }
 
-        viewModel.getFeeds()
-        viewModel.connectRealtimeDb()
         viewModel.getPosts().observe(viewLifecycleOwner) {
             binding.emptyView.visibility = if (it.isEmpty()) View.VISIBLE else View.INVISIBLE
             binding.progressCircular.visibility = View.GONE
@@ -71,13 +74,33 @@ class FeedsFragment : Fragment() {
             viewModel.getFeeds(genres)
         }
 
-
         with(binding) {
             myPostRecycleView.adapter = questionAdapter
             topBar.topCollapsingToolbarLayout.title = getString(R.string.feeds)
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestNotificationPermission()
+        }
 
         return binding.root
+    }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private fun requestNotificationPermission() {
+        if (
+            ActivityCompat.checkSelfPermission(
+                requireContext(),
+                android.Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+                MainActivity.PERMISSION_REQUEST_CODE
+            )
+
+        }
+
     }
 }

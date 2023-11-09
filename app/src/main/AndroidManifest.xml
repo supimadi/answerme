@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
+
     <application
         android:name=".AnswerMeApplication"
         android:allowBackup="true"
@@ -13,9 +18,27 @@
         android:theme="@style/Theme.AnswerMe"
         tools:targetApi="34">
 
+        <receiver
+            android:name=".service.RestarterCommentNotif"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="restartservice" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".service.CommentNotifService"
+            android:enabled="true" >
+        </service>
+
         <activity android:name=".OnBoardingActivity"/>
-        <activity android:name=".ui.comment.CommentActivity"/>
-        <activity android:name=".ui.createquestion.CreateQuestionActivity"/>
+        <activity
+            android:name=".ui.comment.CommentActivity"
+            android:parentActivityName=".MainActivity"/>
+        <activity
+            android:name=".ui.createquestion.CreateQuestionActivity"
+            android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">
