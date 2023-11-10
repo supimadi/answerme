@@ -1,27 +1,31 @@
 package org.d3if3038.answerme.service
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.app.TaskStackBuilder
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.IBinder
 import android.util.Log
-import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import org.d3if3038.answerme.MainActivity
 import org.d3if3038.answerme.R
 import org.d3if3038.answerme.data.SettingDataStore
 import org.d3if3038.answerme.data.dataStore
 import org.d3if3038.answerme.ui.comment.CommentActivity
+import java.util.Random
 
 
-class CommentNotifService() : Service() {
-
+class CommentNotifService : Service() {
     private val firebaseDb: CollectionReference by lazy {
         Firebase.firestore.collection("posts")
     }
@@ -29,14 +33,13 @@ class CommentNotifService() : Service() {
         SettingDataStore(applicationContext.dataStore)
     }
 
-    companion object {
-        private const val NOTIFICATION_ID = 21
-    }
+    private var firebaseListener: ListenerRegistration? = null
 
     private fun getPendingIntent(context: Context, documentId: String): PendingIntent {
         val intent = Intent(context, CommentActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         intent.putExtra("documentId", documentId)
+
 
         val resultPendingIntent: PendingIntent = TaskStackBuilder.create(context).run {
             // Add the intent, which inflates the back stack.
@@ -50,55 +53,81 @@ class CommentNotifService() : Service() {
         return resultPendingIntent
     }
 
-    private fun startListening() {
-        if (ActivityCompat.checkSelfPermission(
-                applicationContext,
-                android.Manifest.permission.POST_NOTIFICATIONS,
-            ) != PackageManager.PERMISSION_GRANTED)
-        {
-            return
+    private fun startForegroundNotif(postTitle: String, documentId: String?) {
+        val NOTIFICATION_CHANNEL_ID = "org.answerme"
+        val channelName = "Comment Notification"
+
+        val chan = NotificationChannel(
+            NOTIFICATION_CHANNEL_ID,
+            channelName,
+            NotificationManager.IMPORTANCE_HIGH
+        )
+
+        chan.lightColor = Color.BLUE
+        chan.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+
+        val manager = (getSystemService(NOTIFICATION_SERVICE) as NotificationManager)
+        manager.createNotificationChannel(chan)
+
+        val notificationBuilder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+        val notification = notificationBuilder
+            .setOngoing(false)
+            .setAutoCancel(true)
+            .setSmallIcon(R.mipmap.ic_launcher_round)
+            .setContentTitle(getString(R.string.new_comment_on, postTitle))
+            .setPriority(NotificationManager.IMPORTANCE_HIGH)
+            .setContentText(
+                applicationContext.getString(
+                    R.string.get_a_new_comment_from_s,
+                    "Sukijak"
+                ))
+
+        if (documentId != null) {
+            notification
+            .setContentIntent(getPendingIntent(applicationContext, documentId))
         }
 
+        val id = Random(System.currentTimeMillis()).nextInt(1000)
+        startForeground(id, notification.build())
+    }
+
+    private fun startListening() {
         val username = settingDataStore.getString("username", "")
         if (username.isEmpty()) return
 
-        val builder = NotificationCompat.Builder(applicationContext,
-            MainActivity.COMMENT_NOTIF_CHANNEL_ID)
-            .setSmallIcon(R.mipmap.ic_launcher_round)
-            .setContentTitle(applicationContext.getString(R.string.get_a_new_comment))
-//            .setContentText(
-//                applicationContext.getString(
-//                    R.string.get_a_new_comment_from_s,
-//                    postTitle,
-//                    commentAuthor
-//                )
-//            )
-//            .setPriority(NotificationCompat.PRIORITY_HIGH)
-//            .setContentIntent(getPendingIntent(applicationContext, docId))
-//            .setAutoCancel(true)
-
-
-        firebaseDb.whereEqualTo("username", username)
+        firebaseListener = firebaseDb.whereEqualTo("username", username)
             .addSnapshotListener { value, error ->
-                if (error != null) {
-                    return@addSnapshotListener
-                }
+                if (error != null) { return@addSnapshotListener }
                 if (value == null || value.isEmpty) return@addSnapshotListener
+
                 Log.d("FIREBASE_CHANGE_LEN", value.documents.size.toString())
 
-
                 value.documentChanges.forEach {
-                    Log.d("FIREBASE_CHANGE", it.document.getString("documentId").toString())
-                }
+                    val document = it.document
 
-                startForeground(2, builder.build())
+                    if (it.type != DocumentChange.Type.MODIFIED)
+                        return@forEach
+
+                    val data = document.data
+                    Log.d("FIREBASE_CHANGE", data.toString())
+
+                    startForegroundNotif(
+                        document.getString("title")!!,
+                        document.getString("documentId")
+                    )
+
+                }
             }
 
     }
 
-    override fun onCreate() {
-        super.onCreate()
-        startListening()
+    private fun stopListening() {
+        if (firebaseListener == null) return
+
+        firebaseListener!!.remove()
+        firebaseListener = null
+
+        Log.d("NOTIF_SERVICE", "STOPED")
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -109,12 +138,15 @@ class CommentNotifService() : Service() {
         return START_STICKY
     }
 
+
     override fun onBind(p0: Intent?): IBinder? {
         return null
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        super.onTaskRemoved(rootIntent)
+
+        stopListening()
 
         val broadcastIntent = Intent()
         broadcastIntent.action = "restartservice"
@@ -122,4 +154,16 @@ class CommentNotifService() : Service() {
 
         sendBroadcast(broadcastIntent)
     }
+
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        stopListening()
+//
+//        val broadcastIntent = Intent()
+//        broadcastIntent.action = "restartservice"
+//        broadcastIntent.setClass(this, RestarterCommentNotif::class.java)
+//
+//        sendBroadcast(broadcastIntent)
+//
+//    }
 }

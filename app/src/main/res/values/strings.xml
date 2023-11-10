@@ -34,6 +34,7 @@
     <string name="title_can_t_be_more_than_20_character">Title Can\'t Be More Than 15 Character.</string>
     <string name="question_can_t_be_more_than_150_character">Question Can\'t Be More Than 150 Character.</string>
     <string name="get_a_new_comment">Get a New Comment</string>
-    <string name="get_a_new_comment_from_s">Get a new comment on "%s" from %s.</string>
+    <string name="get_a_new_comment_from_s">Get a new comment from %s.</string>
+    <string name="new_comment_on">New Comment On %1$s</string>
 
 </resources>

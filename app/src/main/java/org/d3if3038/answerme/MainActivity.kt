@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         const val PERMISSION_REQUEST_CODE = 1
     }
 
+    @Suppress("DEPRECATION")
     private fun isMyServiceRunning(serviceClass: Class<*>): Boolean {
         val manager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
         for (service in manager.getRunningServices(Int.MAX_VALUE)) {
@@ -49,16 +50,19 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        commentNotifService = CommentNotifService()
-        commentServiceIntent = Intent(this, CommentNotifService::class.java)
-
-        if (!isMyServiceRunning(CommentNotifService::class.java)) {
-            startService(commentServiceIntent)
-        }
-
         if (!settingDataStore.getBoolean("is_boarded", false)) {
             startActivity(Intent(this, OnBoardingActivity::class.java))
         }
+
+        commentNotifService = CommentNotifService()
+        commentServiceIntent = Intent(this, CommentNotifService::class.java)
+        Log.d("NOTIF_SERVICE_FLAGS", isMyServiceRunning(commentNotifService::class.java).toString())
+
+        if (!isMyServiceRunning(commentNotifService::class.java)) {
+            startService(commentServiceIntent)
+        }
+
+        Log.d("NOTIF_SERVICE_FLAGS", isMyServiceRunning(commentNotifService::class.java).toString())
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.mainContainerFragment) as NavHostFragment
         navController = navHostFragment.navController
@@ -79,11 +83,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        val broadcastIntent = Intent()
-        broadcastIntent.action = "restartservice"
-        broadcastIntent.setClass(this, RestarterCommentNotif::class.java)
+        stopService(commentServiceIntent)
 
-        sendBroadcast(broadcastIntent)
+//        val broadcastIntent = Intent()
+//        broadcastIntent.action = "restartservice"
+//        broadcastIntent.setClass(this, RestarterCommentNotif::class.java)
+//
+//        sendBroadcast(broadcastIntent)
 
         super.onDestroy()
     }

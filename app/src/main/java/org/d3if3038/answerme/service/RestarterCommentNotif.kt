@@ -1,14 +1,22 @@
 package org.d3if3038.answerme.service
 
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
+
+
+
 
 
 class RestarterCommentNotif : BroadcastReceiver() {
-    override fun onReceive(p0: Context?, p1: Intent?) {
-        if (p0 == null) return
-
-        p0.startForegroundService(Intent(p0, CommentNotifService::class.java))
+    @SuppressLint("ObsoleteSdkInt")
+    override fun onReceive(context: Context, p1: Intent) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(Intent(context, CommentNotifService::class.java))
+        } else {
+            context.startService(Intent(context, CommentNotifService::class.java))
+        }
     }
 }

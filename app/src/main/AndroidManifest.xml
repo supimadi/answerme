@@ -16,6 +16,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AnswerMe"
+        android:enableOnBackInvokedCallback="true"
         tools:targetApi="34">
 
         <receiver
