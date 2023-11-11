@@ -33,6 +33,8 @@ class CommentNotifService : Service() {
         SettingDataStore(applicationContext.dataStore)
     }
 
+    private var notificationCounter = 100
+
     private var firebaseListener: ListenerRegistration? = null
 
     private fun getPendingIntent(context: Context, documentId: String): PendingIntent {
@@ -88,7 +90,11 @@ class CommentNotifService : Service() {
         }
 
         val id = Random(System.currentTimeMillis()).nextInt(1000)
-        startForeground(id, notification.build())
+        Log.d("NOTIF_SERVICE", "Id Notif $id")
+
+//        startForeground(id, notification.build())
+//        startForeground(123, Notification())
+        manager.notify(id, notification.build())
     }
 
     private fun startListening() {
@@ -143,20 +149,9 @@ class CommentNotifService : Service() {
         return null
     }
 
-    override fun onTaskRemoved(rootIntent: Intent?) {
-        super.onTaskRemoved(rootIntent)
-
-        stopListening()
-
-        val broadcastIntent = Intent()
-        broadcastIntent.action = "restartservice"
-        broadcastIntent.setClass(this, RestarterCommentNotif::class.java)
-
-        sendBroadcast(broadcastIntent)
-    }
-
-//    override fun onDestroy() {
-//        super.onDestroy()
+//    override fun onTaskRemoved(rootIntent: Intent?) {
+//        super.onTaskRemoved(rootIntent)
+//
 //        stopListening()
 //
 //        val broadcastIntent = Intent()
@@ -164,6 +159,17 @@ class CommentNotifService : Service() {
 //        broadcastIntent.setClass(this, RestarterCommentNotif::class.java)
 //
 //        sendBroadcast(broadcastIntent)
-//
 //    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopListening()
+
+        val broadcastIntent = Intent()
+        broadcastIntent.action = "restartservice"
+        broadcastIntent.setClass(this, RestarterCommentNotif::class.java)
+
+        sendBroadcast(broadcastIntent)
+
+    }
 }

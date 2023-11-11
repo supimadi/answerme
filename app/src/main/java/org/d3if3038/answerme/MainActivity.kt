@@ -15,7 +15,6 @@ import org.d3if3038.answerme.data.SettingDataStore
 import org.d3if3038.answerme.data.dataStore
 import org.d3if3038.answerme.databinding.ActivityMainBinding
 import org.d3if3038.answerme.service.CommentNotifService
-import org.d3if3038.answerme.service.RestarterCommentNotif
 
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
