@@ -6,7 +6,6 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.app.TaskStackBuilder
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -32,8 +31,6 @@ class CommentNotifService : Service() {
     private val settingDataStore: SettingDataStore by lazy {
         SettingDataStore(applicationContext.dataStore)
     }
-
-    private var notificationCounter = 100
 
     private var firebaseListener: ListenerRegistration? = null
 
@@ -101,9 +98,11 @@ class CommentNotifService : Service() {
         val username = settingDataStore.getString("username", "")
         if (username.isEmpty()) return
 
-        firebaseListener = firebaseDb.whereEqualTo("username", username)
+        firebaseListener = firebaseDb
+            .whereEqualTo("username", username)
+            .whereEqualTo("deleted", false)
             .addSnapshotListener { value, error ->
-                if (error != null) { return@addSnapshotListener }
+                if (error != null) return@addSnapshotListener
                 if (value == null || value.isEmpty) return@addSnapshotListener
 
                 Log.d("FIREBASE_CHANGE_LEN", value.documents.size.toString())
@@ -115,6 +114,9 @@ class CommentNotifService : Service() {
                         return@forEach
 
                     val data = document.data
+                    val comments = document.get("comments")
+
+                    Log.d("FIREBASE_DATA", comments.toString())
                     Log.d("FIREBASE_CHANGE", data.toString())
 
                     startForegroundNotif(

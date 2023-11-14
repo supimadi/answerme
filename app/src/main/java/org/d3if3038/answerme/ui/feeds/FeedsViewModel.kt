@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -85,7 +86,9 @@ class FeedsViewModel : ViewModel() {
         }
     }
 
-    private fun fetchQuestion(firebaseCollection: CollectionReference) = firebaseCollection.get()
+    private fun fetchQuestion(firebaseCollection: CollectionReference) = firebaseCollection
+        .orderBy("timeStamp", Query.Direction.DESCENDING)
+        .get()
 
     private fun fetchQuestion(
         firebaseCollection: CollectionReference,
@@ -94,6 +97,7 @@ class FeedsViewModel : ViewModel() {
 
         return firebaseCollection
             .whereArrayContainsAny("genres", category)
+            .orderBy("timeStamp", Query.Direction.DESCENDING)
             .get()
 
     }

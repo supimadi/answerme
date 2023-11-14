@@ -5,7 +5,7 @@
     android:layout_marginBottom="16dp"
     android:background="@drawable/round_border"
     android:paddingHorizontal="5dp"
-    android:paddingVertical="10dp"
+    android:paddingBottom="10dp"
     android:id="@+id/postContainer"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -23,47 +23,45 @@
 
     <LinearLayout
         android:id="@+id/authorLayout"
-        android:layout_width="0dp"
         android:layout_marginStart="12dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/profileImage"
         app:layout_constraintStart_toEndOf="@+id/profileImage">
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_bold"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            tools:text="Permacetan ini" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/separator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:text="@string/middle_dot"
-            android:textColor="?attr/colorOnPrimary" />
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/inter_bold"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                tools:text="Permacetan ini" />
+
+            <TextView
+                android:id="@+id/timeStampText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:textSize="11sp"
+                tools:text="14.43" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/author"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/inter"
-            android:textStyle="italic"
-            tools:text="Rizal Renaldi" />
-
-        <TextView
-            android:id="@+id/timeStampText"
+            android:textSize="12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:textSize="11sp"
-            android:text="14.43" />
+            android:fontFamily="@font/inter"
+            tools:text="Rizal Renaldi" />
 
     </LinearLayout>
 
@@ -71,7 +69,7 @@
         android:id="@+id/postText"
         android:layout_width="0dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="5dp"
         android:fontFamily="@font/inter"
         android:layout_height="wrap_content"
         android:singleLine="true"

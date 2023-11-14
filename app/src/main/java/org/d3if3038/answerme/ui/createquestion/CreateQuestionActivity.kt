@@ -5,9 +5,11 @@ import android.view.View
 import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.ui.graphics.Color
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.chip.Chip
+import com.google.android.material.transition.platform.MaterialArcMotion
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import org.d3if3038.answerme.R
@@ -31,27 +33,19 @@ class CreateQuestionActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Enable Activity Transitions. Optionally enable Activity transitions in your
-        // theme with <item name=”android:windowActivityTransitions”>true</item>.
-        window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
-
-        // Set the transition name, which matches Activity A’s start view transition name, on
-        // the root view.
+//        window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
         findViewById<View>(android.R.id.content).transitionName = "shared_element_container"
-
-        // Attach a callback used to receive the shared elements from Activity A to be
-        // used by the container transform transition.
         setEnterSharedElementCallback(MaterialContainerTransformSharedElementCallback())
-
-        // Set this Activity’s enter and return transition to a MaterialContainerTransform
         window.sharedElementEnterTransition = MaterialContainerTransform().apply {
             addTarget(android.R.id.content)
-            duration = 300L
+            duration = 700L
+            scrimColor = getColor(R.color.transparent)
+            addTarget(endView)
         }
-
         window.sharedElementReturnTransition = MaterialContainerTransform().apply {
             addTarget(android.R.id.content)
             duration = 250L
+            scrimColor = getColor(R.color.transparent)
         }
 
         super.onCreate(savedInstanceState)
@@ -73,7 +67,7 @@ class CreateQuestionActivity : AppCompatActivity() {
             topCollapsingToolbarLayout.title = getString(R.string.create_a_new_post)
             topAppBar.setNavigationIcon(R.drawable.baseline_close_24)
             topAppBar.setNavigationOnClickListener {
-                finish()
+
             }
         }
 
@@ -86,9 +80,11 @@ class CreateQuestionActivity : AppCompatActivity() {
             ).show()
         }
         viewModel.getStatus().observe(this) {
-            if (it == FetchStatus.SUCCESS)
+            if (it == FetchStatus.SUCCESS || it == FetchStatus.PENDING)
                 finish()
         }
+
+        binding.endView.visibility = View.GONE
     }
 
     private fun checkTitleLength() = with(binding.titleInputHint) {

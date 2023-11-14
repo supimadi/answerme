@@ -49,7 +49,6 @@ class CommentAdapter : ListAdapter<Comment, CommentAdapter.ViewHolder>(DIFF_CALL
             this.author.text = item.username
             this.postText.text = item.commentText
 
-            this.separator.visibility = View.GONE
             this.title.visibility = View.GONE
 
             val dateDiff =  TimeUnit.DAYS.convert(

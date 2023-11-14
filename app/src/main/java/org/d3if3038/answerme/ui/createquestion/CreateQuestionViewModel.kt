@@ -1,5 +1,6 @@
 package org.d3if3038.answerme.ui.createquestion
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -30,11 +31,18 @@ class CreateQuestionViewModel : ViewModel() {
                     .set(post)
                     .addOnFailureListener {
                         message.postValue(it.message!!.split(".")[0])
+                        postStatus.postValue(FetchStatus.FAILED)
+                        return@addOnFailureListener
                     }
                     .addOnSuccessListener {
                         message.postValue("Success Post a New Question!")
                         postStatus.postValue(FetchStatus.SUCCESS)
+                        return@addOnSuccessListener
                     }
+
+                Log.d("FIREBASE_INSERT", document.id)
+                message.postValue("Your post have been pending, because of internet connection.")
+                postStatus.postValue(FetchStatus.PENDING)
             }
         }
     }

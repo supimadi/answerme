@@ -13,6 +13,8 @@
 
     <color name="transparent">#00000000</color>
 
+    <color name="yellow_100">#FAF9C9</color>
+
     <color name="red_200">#E8909E</color>
     <color name="red_500">#EC4B66</color>
     <color name="red_700">#69212D</color>

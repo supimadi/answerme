@@ -12,7 +12,8 @@
         tools:layout="@layout/fragment_feeds">
         <action
             android:id="@+id/action_feedPages_to_commentActivity"
-            app:destination="@id/commentActivity" />
+            app:destination="@id/commentActivity"
+            app:popUpTo="@id/feedPages" />
         <action
             android:id="@+id/action_feedPages_to_createQuestionActivity"
             app:destination="@id/createQuestionActivity" />
@@ -31,7 +32,8 @@
         tools:layout="@layout/fragment_my_question">
         <action
             android:id="@+id/action_myQuestionPage_to_commentActivity"
-            app:destination="@id/commentActivity" />
+            app:destination="@id/commentActivity"
+            app:popUpTo="@id/myQuestionPage" />
     </fragment>
 
 

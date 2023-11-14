@@ -7,10 +7,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import org.d3if3038.answerme.data.SettingDataStore
 import org.d3if3038.answerme.data.dataStore
 import org.d3if3038.answerme.databinding.ActivityMainBinding
@@ -45,23 +47,25 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+//        window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
+        setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
+        window.sharedElementsUseOverlay = false
+
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        if (!settingDataStore.getBoolean("is_boarded", false)) {
-            startActivity(Intent(this, OnBoardingActivity::class.java))
-        }
 
         commentNotifService = CommentNotifService()
         commentServiceIntent = Intent(this, CommentNotifService::class.java)
-        Log.d("NOTIF_SERVICE_FLAGS", isMyServiceRunning(commentNotifService::class.java).toString())
 
         if (!isMyServiceRunning(commentNotifService::class.java)) {
             startService(commentServiceIntent)
         }
 
-        Log.d("NOTIF_SERVICE_FLAGS", isMyServiceRunning(commentNotifService::class.java).toString())
+        setContentView(binding.root)
+
+        if (!settingDataStore.getBoolean("is_boarded", false)) {
+            startActivity(Intent(this, OnBoardingActivity::class.java))
+        }
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.mainContainerFragment) as NavHostFragment
         navController = navHostFragment.navController
@@ -83,12 +87,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         stopService(commentServiceIntent)
-
-//        val broadcastIntent = Intent()
-//        broadcastIntent.action = "restartservice"
-//        broadcastIntent.setClass(this, RestarterCommentNotif::class.java)
-//
-//        sendBroadcast(broadcastIntent)
 
         super.onDestroy()
     }

@@ -38,16 +38,10 @@ class CommentActivity : AppCompatActivity() {
 
         with(binding) {
             commentRecycleView.adapter = commentAdapter
-            commentRecycleView.isNestedScrollingEnabled = false
             topBar.topAppBar.setNavigationIcon(R.drawable.baseline_close_24)
             topBar.topAppBar.setNavigationOnClickListener { finish() }
 
             commentInputHint.setEndIconOnClickListener { postComment() }
-        }
-
-
-        binding.commentRecycleView.setOnScrollChangeListener { view, i, i2, i3, i4 ->
-            Log.d("SCROLL_VALUE", "${i}, ${i2}, ${i3}, ${i4}")
         }
 
         viewModel.getPost().observe(this) { updatePostUI(it) }
