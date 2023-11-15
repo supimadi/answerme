@@ -1,7 +1,5 @@
 package org.d3if3038.answerme.ui.feeds
 
-import android.app.ActivityOptions
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -12,17 +10,12 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
-import com.google.android.material.transition.Hold
-import com.google.android.material.transition.MaterialContainerTransform
-import com.google.android.material.transition.MaterialElevationScale
 import org.d3if3038.answerme.MainActivity
 import org.d3if3038.answerme.R
 import org.d3if3038.answerme.adapter.QuestionAdapter
 import org.d3if3038.answerme.databinding.FragmentFeedsBinding
-import org.d3if3038.answerme.ui.createquestion.CreateQuestionActivity
 
 class FeedsFragment : Fragment() {
     private lateinit var binding: FragmentFeedsBinding
@@ -41,21 +34,9 @@ class FeedsFragment : Fragment() {
         questionAdapter = QuestionAdapter()
 
         binding.fabNewPost.setOnClickListener {
-            @Suppress("UNCHECKED_CAST")
-            val extras = FragmentNavigatorExtras((view to "shared_element_container") as Pair<View, String>)
-
-            val intent = Intent(requireContext(), CreateQuestionActivity::class.java)
-            val options = ActivityOptions.makeSceneTransitionAnimation(
-                requireActivity(),
-                binding.fabNewPost,
-                "shared_element_container" // The transition name to be matched in Activity B.
+            findNavController().navigate(
+                FeedsFragmentDirections.actionFeedPagesToCreateQuestionFragment()
             )
-
-//            findNavController().navigate(
-//                FeedsFragmentDirections.actionFeedPagesToCreateQuestionActivity(),
-//                extras
-//            )
-            startActivity(intent, options.toBundle())
         }
 
         viewModel.getPosts().observe(viewLifecycleOwner) {

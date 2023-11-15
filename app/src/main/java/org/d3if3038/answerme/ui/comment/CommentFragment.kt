@@ -1,12 +1,13 @@
 package org.d3if3038.answerme.ui.comment
 
 import android.os.Bundle
-import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
-import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.app.AppCompatActivity
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.navArgs
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import org.d3if3038.answerme.R
 import org.d3if3038.answerme.adapter.CommentAdapter
 import org.d3if3038.answerme.data.SettingDataStore
@@ -16,49 +17,52 @@ import org.d3if3038.answerme.model.Comment
 import org.d3if3038.answerme.model.FetchStatus
 import org.d3if3038.answerme.model.Post
 
-class CommentActivity : AppCompatActivity() {
+class CommentFragment : Fragment() {
     private lateinit var binding: ActivityCommentBinding
     private lateinit var commentAdapter: CommentAdapter
 
-    private val postArgs: CommentActivityArgs by navArgs()
+    private val postArgs: CommentFragmentArgs by navArgs()
 
     private val viewModel: CommentViewModel by lazy {
         ViewModelProvider(this)[CommentViewModel::class.java]
     }
     private val settingDataStore: SettingDataStore by lazy {
-        SettingDataStore(applicationContext.dataStore)
+        SettingDataStore(requireContext().dataStore)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = ActivityCommentBinding.inflate(layoutInflater)
         commentAdapter = CommentAdapter()
 
-        setContentView(binding.root)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
             commentRecycleView.adapter = commentAdapter
             topBar.topAppBar.setNavigationIcon(R.drawable.baseline_close_24)
-            topBar.topAppBar.setNavigationOnClickListener { finish() }
+            topBar.topAppBar.setNavigationOnClickListener { findNavController().navigateUp() }
 
             commentInputHint.setEndIconOnClickListener { postComment() }
         }
 
-        viewModel.getPost().observe(this) { updatePostUI(it) }
-        viewModel.getComments().observe(this) { commentAdapter.submitList(it) }
-        viewModel.getCommentPostStatus().observe(this) {
+        viewModel.getPost().observe(viewLifecycleOwner) { updatePostUI(it) }
+        viewModel.getComments().observe(viewLifecycleOwner) { commentAdapter.submitList(it) }
+        viewModel.getCommentPostStatus().observe(viewLifecycleOwner) {
             if (it != FetchStatus.SUCCESS) return@observe
 
-            currentFocus?.let { view ->
-                val imm = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
-                imm?.hideSoftInputFromWindow(view.windowToken, 0)
-            }
+            // TODO: Need to implement hidden soft keyboard
 
             binding.commenttextinput.clearFocus()
             binding.commenttextinput.setText("")
         }
         viewModel.fetchQuestion(postArgs.documentId)
-
     }
 
     private fun postComment() {

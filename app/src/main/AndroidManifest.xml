@@ -35,12 +35,6 @@
 
         <activity android:name=".OnBoardingActivity"/>
         <activity
-            android:name=".ui.comment.CommentActivity"
-            android:parentActivityName=".MainActivity"/>
-        <activity
-            android:name=".ui.createquestion.CreateQuestionActivity"
-            android:parentActivityName=".MainActivity"/>
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

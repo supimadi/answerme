@@ -1,17 +1,15 @@
 package org.d3if3038.answerme.ui.createquestion
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import android.view.Window
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.graphics.Color
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
-import com.google.android.material.transition.platform.MaterialArcMotion
-import com.google.android.material.transition.platform.MaterialContainerTransform
-import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import org.d3if3038.answerme.R
 import org.d3if3038.answerme.data.SettingDataStore
 import org.d3if3038.answerme.data.dataStore
@@ -19,7 +17,7 @@ import org.d3if3038.answerme.databinding.ActivityCreateQuestionBinding
 import org.d3if3038.answerme.model.FetchStatus
 import org.d3if3038.answerme.model.Post
 
-class CreateQuestionActivity : AppCompatActivity() {
+class CreateQuestionFragment : Fragment() {
     private lateinit var binding: ActivityCreateQuestionBinding
 
     private var questionValid = true
@@ -29,29 +27,22 @@ class CreateQuestionActivity : AppCompatActivity() {
         ViewModelProvider(this)[CreateQuestionViewModel::class.java]
     }
     private val settingDataStore: SettingDataStore by lazy {
-        SettingDataStore(this.dataStore)
+        SettingDataStore(requireContext().dataStore)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-//        window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
-        findViewById<View>(android.R.id.content).transitionName = "shared_element_container"
-        setEnterSharedElementCallback(MaterialContainerTransformSharedElementCallback())
-        window.sharedElementEnterTransition = MaterialContainerTransform().apply {
-            addTarget(android.R.id.content)
-            duration = 700L
-            scrimColor = getColor(R.color.transparent)
-            addTarget(endView)
-        }
-        window.sharedElementReturnTransition = MaterialContainerTransform().apply {
-            addTarget(android.R.id.content)
-            duration = 250L
-            scrimColor = getColor(R.color.transparent)
-        }
-
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateQuestionBinding.inflate(layoutInflater)
 
-        setContentView(binding.root)
+        return  binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.postButton.setOnClickListener { createPost() }
         binding.titleTextInput.addTextChangedListener { text ->
@@ -71,17 +62,16 @@ class CreateQuestionActivity : AppCompatActivity() {
             }
         }
 
-
-        viewModel.getMessage().observe(this) {
+        viewModel.getMessage().observe(viewLifecycleOwner) {
             Toast.makeText(
-                applicationContext,
+                requireContext(),
                 it,
                 Toast.LENGTH_LONG
             ).show()
         }
-        viewModel.getStatus().observe(this) {
+        viewModel.getStatus().observe(viewLifecycleOwner) {
             if (it == FetchStatus.SUCCESS || it == FetchStatus.PENDING)
-                finish()
+                findNavController().navigateUp()
         }
 
         binding.endView.visibility = View.GONE
@@ -126,27 +116,27 @@ class CreateQuestionActivity : AppCompatActivity() {
         val question = binding.questionTextInput.text
 
         if (selectedGenres.isEmpty()) {
-            Toast.makeText(this, "Genre(s) is Required!", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), "Genre(s) is Required!", Toast.LENGTH_LONG).show()
             return
         }
 
         if (postTitle.isNullOrEmpty()) {
-            Toast.makeText(this, "Post Title is Required!", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), "Post Title is Required!", Toast.LENGTH_LONG).show()
             return
         }
 
         if (question.isNullOrEmpty()) {
-            Toast.makeText(this, "Question is Required!", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), "Question is Required!", Toast.LENGTH_LONG).show()
             return
         }
 
         if (username.isEmpty()) {
-            Toast.makeText(this, "Enter Your Username First in Setting!", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), "Enter Your Username First in Setting!", Toast.LENGTH_LONG).show()
             return
         }
 
         if (!titleValid || !questionValid) {
-            Toast.makeText(this, "There is a problems, fix it please...", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), "There is a problems, fix it please...", Toast.LENGTH_LONG).show()
             return
         }
 

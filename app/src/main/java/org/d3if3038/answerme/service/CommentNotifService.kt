@@ -20,7 +20,7 @@ import com.google.firebase.ktx.Firebase
 import org.d3if3038.answerme.R
 import org.d3if3038.answerme.data.SettingDataStore
 import org.d3if3038.answerme.data.dataStore
-import org.d3if3038.answerme.ui.comment.CommentActivity
+import org.d3if3038.answerme.ui.comment.CommentFragment
 import java.util.Random
 
 
@@ -35,7 +35,7 @@ class CommentNotifService : Service() {
     private var firebaseListener: ListenerRegistration? = null
 
     private fun getPendingIntent(context: Context, documentId: String): PendingIntent {
-        val intent = Intent(context, CommentActivity::class.java)
+        val intent = Intent(context, CommentFragment::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         intent.putExtra("documentId", documentId)
 

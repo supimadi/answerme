@@ -11,12 +11,11 @@
         android:label="@string/feeds"
         tools:layout="@layout/fragment_feeds">
         <action
-            android:id="@+id/action_feedPages_to_commentActivity"
-            app:destination="@id/commentActivity"
-            app:popUpTo="@id/feedPages" />
+            android:id="@+id/action_feedPages_to_commentFragment"
+            app:destination="@id/commentFragment" />
         <action
-            android:id="@+id/action_feedPages_to_createQuestionActivity"
-            app:destination="@id/createQuestionActivity" />
+            android:id="@+id/action_feedPages_to_createQuestionFragment"
+            app:destination="@id/createQuestionFragment" />
     </fragment>
 
     <fragment
@@ -31,26 +30,24 @@
         android:label="@string/my_post"
         tools:layout="@layout/fragment_my_question">
         <action
-            android:id="@+id/action_myQuestionPage_to_commentActivity"
-            app:destination="@id/commentActivity"
-            app:popUpTo="@id/myQuestionPage" />
+            android:id="@+id/action_myQuestionPage_to_commentFragment"
+            app:destination="@id/commentFragment" />
     </fragment>
 
 
-    <activity
-        android:id="@+id/commentActivity"
-        android:name="org.d3if3038.answerme.ui.comment.CommentActivity"
-        android:label="CommentActivity"
+    <fragment
+        android:id="@+id/commentFragment"
+        android:name="org.d3if3038.answerme.ui.comment.CommentFragment"
+        android:label="CommentFragment"
         tools:layout="@layout/activity_comment">
         <argument
             android:name="documentId"
             app:argType="string" />
-    </activity>
-
-    <activity
-        android:id="@+id/createQuestionActivity"
-        android:name="org.d3if3038.answerme.ui.createquestion.CreateQuestionActivity"
-        android:label="CreateQuestionActivity"
+    </fragment>
+    <fragment
+        android:id="@+id/createQuestionFragment"
+        android:name="org.d3if3038.answerme.ui.createquestion.CreateQuestionFragment"
+        android:label="CreateQuestionFragment"
         tools:layout="@layout/activity_create_question"/>
 
 </navigation>

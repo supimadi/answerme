@@ -7,7 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.Window
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -69,6 +69,12 @@ class MainActivity : AppCompatActivity() {
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.mainContainerFragment) as NavHostFragment
         navController = navHostFragment.navController
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            binding.bottomNavigation.visibility = when(destination.id) {
+                R.id.commentFragment -> View.GONE
+                else -> View.VISIBLE
+            }
+        }
 
         binding.bottomNavigation.selectedItemId = R.id.feedPages
         NavigationUI.setupWithNavController(binding.bottomNavigation, navController)
@@ -91,3 +97,6 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
     }
 }
+
+
+
