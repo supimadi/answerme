@@ -11,17 +11,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
-import com.google.android.material.transition.platform.MaterialArcMotion
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import org.d3if3038.answerme.R
 import org.d3if3038.answerme.data.SettingDataStore
 import org.d3if3038.answerme.data.dataStore
-import org.d3if3038.answerme.databinding.ActivityCreateQuestionBinding
+import org.d3if3038.answerme.databinding.FragmentCreateQuestionBinding
 import org.d3if3038.answerme.model.FetchStatus
 import org.d3if3038.answerme.model.Post
 
 class CreateQuestionFragment : Fragment() {
-    private lateinit var binding: ActivityCreateQuestionBinding
+    private lateinit var binding: FragmentCreateQuestionBinding
 
     private var questionValid = true
     private var titleValid = true
@@ -49,7 +48,7 @@ class CreateQuestionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         super.onCreate(savedInstanceState)
-        binding = ActivityCreateQuestionBinding.inflate(layoutInflater)
+        binding = FragmentCreateQuestionBinding.inflate(layoutInflater)
 
         return  binding.root
     }

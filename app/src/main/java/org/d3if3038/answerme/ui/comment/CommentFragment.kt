@@ -12,13 +12,13 @@ import org.d3if3038.answerme.R
 import org.d3if3038.answerme.adapter.CommentAdapter
 import org.d3if3038.answerme.data.SettingDataStore
 import org.d3if3038.answerme.data.dataStore
-import org.d3if3038.answerme.databinding.ActivityCommentBinding
+import org.d3if3038.answerme.databinding.FragmentCommentBinding
 import org.d3if3038.answerme.model.Comment
 import org.d3if3038.answerme.model.FetchStatus
 import org.d3if3038.answerme.model.Post
 
 class CommentFragment : Fragment() {
-    private lateinit var binding: ActivityCommentBinding
+    private lateinit var binding: FragmentCommentBinding
     private lateinit var commentAdapter: CommentAdapter
 
     private val postArgs: CommentFragmentArgs by navArgs()
@@ -35,7 +35,7 @@ class CommentFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = ActivityCommentBinding.inflate(layoutInflater)
+        binding = FragmentCommentBinding.inflate(layoutInflater)
         commentAdapter = CommentAdapter()
 
         return binding.root

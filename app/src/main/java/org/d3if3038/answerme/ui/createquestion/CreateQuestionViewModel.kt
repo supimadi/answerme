@@ -25,6 +25,7 @@ class CreateQuestionViewModel : ViewModel() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val document = firebaseDb.collection("posts").document()
+                var isSuccess = false
                 post.documentId = document.id
 
                 document
@@ -32,13 +33,14 @@ class CreateQuestionViewModel : ViewModel() {
                     .addOnFailureListener {
                         message.postValue(it.message!!.split(".")[0])
                         postStatus.postValue(FetchStatus.FAILED)
-                        return@addOnFailureListener
                     }
                     .addOnSuccessListener {
                         message.postValue("Success Post a New Question!")
                         postStatus.postValue(FetchStatus.SUCCESS)
-                        return@addOnSuccessListener
+                        isSuccess = true
                     }
+
+                if(isSuccess) return@withContext
 
                 Log.d("FIREBASE_INSERT", document.id)
                 message.postValue("Your post have been pending, because of internet connection.")
