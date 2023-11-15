@@ -32,7 +32,6 @@
         <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
 
         <item name="fontFamily">@font/nunito</item>
-
     </style>
 
     <!-- Extended FAB Style -->
