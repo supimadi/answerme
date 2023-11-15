@@ -3,6 +3,9 @@ package org.d3if3038.answerme
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.Window
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
 import com.github.appintro.AppIntro2
 import com.github.appintro.AppIntroFragment
@@ -17,8 +20,15 @@ class OnBoardingActivity : AppIntro2() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
+
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         super.onCreate(savedInstanceState)
+
+        setIndicatorColor(
+            getColor(R.color.teal_700),
+            getColor(R.color.teal_200)
+        )
 
         // Set flags for onboarding screen
         isSystemBackButtonLocked = true
@@ -35,22 +45,19 @@ class OnBoardingActivity : AppIntro2() {
         ))
 
         addSlide(createSlide(
-            "Selamat Datang",
-            "Hai kamu, saatnya memulai obrolan asik dan seru bersama AnswerMe.",
-            R.drawable.welcome_art
+            "Welcome",
+            getString(R.string.first_slide_onboarding),
+            R.drawable.undraw_joyride
         ))
         addSlide(createSlide(
-            "AnswerMe ?",
-            "Kamu dapat mengirim pesan anonym \n" +
-                    "pada orang lain tanpa diketahui, kamu juga bisa \n" +
-                    "balas pesan orang lain secara anonym, \n" +
-                    "ayo coba sekarang!,",
-            R.drawable.masrsmellow_art
+            "Always Remember A Thing",
+            getString(R.string.second_slide_onboarding),
+            R.drawable.undraw_cat_epte
         ))
         addSlide(createSlide(
-            "Woo Hoo!",
-            "Kamu hampir sampai, ayo kita mulai!",
-            R.drawable.feedback_art
+            "Enjoy Your Time",
+            getString(R.string.third_slide_onboarding),
+            R.drawable.undraw_to_the_moon
         ))
     }
 
@@ -59,7 +66,7 @@ class OnBoardingActivity : AppIntro2() {
             title = title,
             description = desc,
             imageDrawable = image,
-            titleColorRes = R.color.black,
+            titleColorRes = R.color.teal_700,
             descriptionColorRes = R.color.black,
         )
     }

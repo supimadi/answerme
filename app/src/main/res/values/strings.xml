@@ -36,5 +36,10 @@
     <string name="get_a_new_comment">Get a New Comment</string>
     <string name="get_a_new_comment_from_s">Get a new comment from %s.</string>
     <string name="new_comment_on">New Comment On %1$s</string>
+    <string name="tlu_three_letter_username">TLU! Three Letter Username!</string>
+
+    <string name="first_slide_onboarding">First, I do warn you, this a a hostile place. But we are welcome you! Feel Free to speak about anything.</string>
+    <string name="second_slide_onboarding">We do not record anything, yet. We want to make a place for people to talk about anything!</string>
+    <string name="third_slide_onboarding">Enjoy your time, if you can\'t, give me a feedback, or just quit the app.</string>
 
 </resources>

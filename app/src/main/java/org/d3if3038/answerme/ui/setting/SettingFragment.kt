@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -31,12 +32,22 @@ class SettingFragment : Fragment() {
     ): View? {
         binding = FragmentSettingBinding.inflate(inflater, container, false)
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         updateProfileUI(
             settingDataStore.getString("username", ""),
             settingDataStore.getString("dicebearLink", ""),
         )
         registerViewModel()
 
+        binding.usernameInputText.addTextChangedListener {
+            if (it.isNullOrEmpty()) return@addTextChangedListener
+            checkUsernameLength()
+        }
         binding.topBar.topCollapsingToolbarLayout.title = getString(R.string.setting)
         binding.saveProfileBtn.setOnClickListener {
             if (!binding.saveProfileBtn.isEnabled) return@setOnClickListener
@@ -54,8 +65,15 @@ class SettingFragment : Fragment() {
                 )
             )
         }
+    }
 
-        return binding.root
+    private fun checkUsernameLength() = with(binding.usernameInputHint) {
+        if (binding.usernameInputText.length() > 3) {
+            this.isErrorEnabled = true
+            this.error = getString(R.string.tlu_three_letter_username)
+        } else {
+            this.isErrorEnabled = false
+        }
     }
 
     private fun  registerViewModel() {
@@ -79,6 +97,8 @@ class SettingFragment : Fragment() {
     }
 
     private fun updateProfileUI(username: String, dicebearUrl: String) {
+        if (binding.usernameInputHint.isErrorEnabled) return
+
         binding.usernameInputText.setText(username)
         if (dicebearUrl.isEmpty()) {
             Glide.with(requireActivity())
