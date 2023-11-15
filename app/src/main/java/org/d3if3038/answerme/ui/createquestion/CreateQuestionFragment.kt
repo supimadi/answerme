@@ -1,5 +1,6 @@
 package org.d3if3038.answerme.ui.createquestion
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
+import com.google.android.material.transition.platform.MaterialArcMotion
+import com.google.android.material.transition.platform.MaterialContainerTransform
 import org.d3if3038.answerme.R
 import org.d3if3038.answerme.data.SettingDataStore
 import org.d3if3038.answerme.data.dataStore
@@ -28,6 +31,16 @@ class CreateQuestionFragment : Fragment() {
     }
     private val settingDataStore: SettingDataStore by lazy {
         SettingDataStore(requireContext().dataStore)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
+            scrimColor = Color.TRANSPARENT
+            duration = 400L
+
+        }
     }
 
     override fun onCreateView(
@@ -58,7 +71,7 @@ class CreateQuestionFragment : Fragment() {
             topCollapsingToolbarLayout.title = getString(R.string.create_a_new_post)
             topAppBar.setNavigationIcon(R.drawable.baseline_close_24)
             topAppBar.setNavigationOnClickListener {
-
+                findNavController().navigateUp()
             }
         }
 
@@ -73,8 +86,6 @@ class CreateQuestionFragment : Fragment() {
             if (it == FetchStatus.SUCCESS || it == FetchStatus.PENDING)
                 findNavController().navigateUp()
         }
-
-        binding.endView.visibility = View.GONE
     }
 
     private fun checkTitleLength() = with(binding.titleInputHint) {

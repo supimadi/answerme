@@ -10,8 +10,10 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
+import com.google.android.material.transition.platform.Hold
 import org.d3if3038.answerme.MainActivity
 import org.d3if3038.answerme.R
 import org.d3if3038.answerme.adapter.QuestionAdapter
@@ -25,17 +27,27 @@ class FeedsFragment : Fragment() {
         ViewModelProvider(this)[FeedsViewModel::class.java]
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        exitTransition = Hold()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentFeedsBinding.inflate(layoutInflater, container, false)
         questionAdapter = QuestionAdapter()
 
         binding.fabNewPost.setOnClickListener {
+            val extras = FragmentNavigatorExtras(
+                binding.fabNewPost to "shared_element_container"
+            )
             findNavController().navigate(
-                FeedsFragmentDirections.actionFeedPagesToCreateQuestionFragment()
+                FeedsFragmentDirections.actionFeedPagesToCreateQuestionFragment(),
+                extras
             )
         }
 

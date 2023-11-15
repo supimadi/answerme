@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:transitionName="shared_element_container"
     android:id="@+id/createQuestionActivity"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="?attr/colorPrimaryVariant"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <View
-        tools:visibility="gone"
-        android:id="@+id/endView"
-        android:transitionName="shared_element_container"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"/>
 
     <include
         android:id="@+id/topBar"

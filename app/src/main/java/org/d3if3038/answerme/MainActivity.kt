@@ -72,6 +72,7 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             binding.bottomNavigation.visibility = when(destination.id) {
                 R.id.commentFragment -> View.GONE
+                R.id.createQuestionFragment -> View.GONE
                 else -> View.VISIBLE
             }
         }
