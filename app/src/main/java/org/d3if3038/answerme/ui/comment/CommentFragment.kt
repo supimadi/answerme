@@ -59,6 +59,7 @@ class CommentFragment : Fragment() {
 
             // TODO: Need to implement hidden soft keyboard
 
+            binding.emptyView.visibility = View.GONE
             binding.commenttextinput.clearFocus()
             binding.commenttextinput.setText("")
         }

@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:transitionName="shared_element_container"
-    android:background="@color/transparent"
+    android:background="?attr/colorPrimaryVariant"
     android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
     <androidx.fragment.app.FragmentContainerView
-        android:background="@color/transparent"
+        android:background="?attr/colorPrimaryVariant"
         android:id="@+id/mainContainerFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"

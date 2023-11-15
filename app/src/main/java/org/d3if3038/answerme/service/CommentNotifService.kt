@@ -9,14 +9,17 @@ import android.app.TaskStackBuilder
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.navigation.NavDeepLinkBuilder
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import org.d3if3038.answerme.MainActivity
 import org.d3if3038.answerme.R
 import org.d3if3038.answerme.data.SettingDataStore
 import org.d3if3038.answerme.data.dataStore
@@ -35,21 +38,15 @@ class CommentNotifService : Service() {
     private var firebaseListener: ListenerRegistration? = null
 
     private fun getPendingIntent(context: Context, documentId: String): PendingIntent {
-        val intent = Intent(context, CommentFragment::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        intent.putExtra("documentId", documentId)
+        val bundle = Bundle()
+        bundle.putString("documentId", documentId)
 
-
-        val resultPendingIntent: PendingIntent = TaskStackBuilder.create(context).run {
-            // Add the intent, which inflates the back stack.
-            addNextIntentWithParentStack(intent)
-
-            // Get the PendingIntent containing the entire back stack.
-            getPendingIntent(0,
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-        }
-
-        return resultPendingIntent
+        return NavDeepLinkBuilder(context)
+            .setComponentName(MainActivity::class.java)
+            .setGraph(R.navigation.navigation)
+            .setDestination(R.id.commentFragment)
+            .setArguments(bundle)
+            .createPendingIntent()
     }
 
     private fun startForegroundNotif(postTitle: String, documentId: String?) {
