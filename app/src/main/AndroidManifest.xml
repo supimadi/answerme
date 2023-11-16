@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
         android:name=".AnswerMeApplication"
@@ -20,8 +21,19 @@
         android:enableOnBackInvokedCallback="true"
         tools:targetApi="34">
 
+        <receiver
+            android:enabled="true"
+            android:name=".service.FinishBootReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+
+        </receiver>
+
         <service
-            android:name=".service.CommentNotifiService"
+            android:stopWithTask="false"
+            android:name=".service.CommentNotifService"
             android:enabled="true"
             android:exported="false"/>
 

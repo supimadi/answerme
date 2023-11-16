@@ -1,5 +1,6 @@
 package org.d3if3038.answerme.service
 
+import android.app.AlarmManager
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -11,6 +12,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.IBinder
 import android.os.PowerManager
+import android.os.SystemClock
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.navigation.NavDeepLinkBuilder
@@ -30,7 +32,7 @@ import org.d3if3038.answerme.data.dataStore
 import org.d3if3038.answerme.model.Actions
 import java.util.Random
 
-class CommentNotifiService : Service() {
+class CommentNotifService : Service() {
     private val firebaseDb: CollectionReference by lazy {
         Firebase.firestore.collection("posts")
     }
@@ -74,6 +76,18 @@ class CommentNotifiService : Service() {
         Log.d("NOTIFICATION_SERVICE", "Notification service is stopped.")
     }
 
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        val restartServiceIntent = Intent(applicationContext, CommentNotifService::class.java).also {
+            it.setPackage(packageName)
+            it.action = Actions.START.name
+        }
+
+        val restartServicePendingIntent: PendingIntent = PendingIntent.getService(this, 1, restartServiceIntent,
+            PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE);
+        applicationContext.getSystemService(Context.ALARM_SERVICE);
+        val alarmService: AlarmManager = applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager;
+        alarmService.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 1000, restartServicePendingIntent);
+    }
 
     @OptIn(DelicateCoroutinesApi::class)
     private fun startService() {
