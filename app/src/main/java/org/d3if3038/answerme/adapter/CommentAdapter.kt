@@ -46,10 +46,10 @@ class CommentAdapter : ListAdapter<Comment, CommentAdapter.ViewHolder>(DIFF_CALL
     ) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bind(item: Comment) = with(binding) {
-            this.author.text = item.username
+            this.title.text = item.username
             this.postText.text = item.commentText
 
-            this.title.visibility = View.GONE
+            this.author.visibility = View.GONE
 
             val dateDiff =  TimeUnit.DAYS.convert(
                 System.currentTimeMillis() - item.timeStamp,
