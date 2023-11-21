@@ -68,6 +68,7 @@ class OnBoardingActivity : AppIntro2() {
             imageDrawable = image,
             titleColorRes = R.color.teal_700,
             descriptionColorRes = R.color.black,
+            backgroundColorRes = R.color.white
         )
     }
 

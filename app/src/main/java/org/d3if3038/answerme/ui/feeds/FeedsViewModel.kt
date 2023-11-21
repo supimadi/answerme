@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
@@ -44,9 +45,12 @@ class FeedsViewModel : ViewModel() {
                     return@addSnapshotListener
                 }
 
-                if (value == null || value.isEmpty) return@addSnapshotListener
-
-                isNewPost.value = true
+                value?.documentChanges?.forEach {
+                    if (it.type == DocumentChange.Type.ADDED) {
+                        isNewPost.value = true
+                        return@addSnapshotListener
+                    }
+                }
             }
     }
 

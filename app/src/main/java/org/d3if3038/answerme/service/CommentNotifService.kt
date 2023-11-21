@@ -115,15 +115,18 @@ class CommentNotifService : Service() {
                         value.documentChanges.forEach {
                             val document = it.document
 
-                            if (it.type != DocumentChange.Type.MODIFIED)
+                            if (it.type == DocumentChange.Type.REMOVED)
                                 return@forEach
 
                             val comments = document.get("comments") as List<*>
                             val latComment = comments[comments.size - 1] as HashMap<*, *>
+                            val author = latComment["username"].toString()
+
+                            if (author == username) return@forEach
 
                             createCommentNotification(
                                 document.getString("title")!!,
-                                latComment["username"].toString(),
+                                author,
                                 document.getString("documentId")
                             )
                         }
@@ -154,14 +157,16 @@ class CommentNotifService : Service() {
     }
 
     private fun createCommentNotification(postTitle: String, commentAuthor: String, documentId: String?) {
-        val NOTIFICATION_CHANNEL_ID = "NEW COMMENT CHANNEL"
-        val channelName = "New Comment Notification"
+        val notificationChannelId = "NEW COMMENT CHANNEL"
 
         val chan = NotificationChannel(
-            NOTIFICATION_CHANNEL_ID,
-            channelName,
+            notificationChannelId,
+            "Comments Notification Service",
             NotificationManager.IMPORTANCE_HIGH
-        )
+        ).let {
+            it.description = "Comments Notification"
+            it
+        }
 
         chan.lightColor = Color.BLUE
         chan.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
@@ -169,7 +174,7 @@ class CommentNotifService : Service() {
         val manager = (getSystemService(NOTIFICATION_SERVICE) as NotificationManager)
         manager.createNotificationChannel(chan)
 
-        val notificationBuilder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+        val notificationBuilder = NotificationCompat.Builder(this, notificationChannelId)
         val notification = notificationBuilder
             .setOngoing(false)
             .setAutoCancel(true)
