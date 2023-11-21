@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.transition.platform.MaterialFadeThrough
+import com.google.android.material.transition.platform.MaterialSharedAxis
 import org.d3if3038.answerme.R
 import org.d3if3038.answerme.adapter.CommentAdapter
 import org.d3if3038.answerme.data.SettingDataStore
@@ -28,6 +30,18 @@ class CommentFragment : Fragment() {
     }
     private val settingDataStore: SettingDataStore by lazy {
         SettingDataStore(requireContext().dataStore)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ true).apply {
+            duration = 1000L
+        }
+        returnTransition = MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).apply {
+            duration = 500L
+        }
     }
 
     override fun onCreateView(

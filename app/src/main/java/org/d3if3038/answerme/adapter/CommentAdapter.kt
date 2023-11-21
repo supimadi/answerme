@@ -33,7 +33,7 @@ class CommentAdapter : ListAdapter<Comment, CommentAdapter.ViewHolder>(DIFF_CALL
         val inflater = LayoutInflater.from(parent.context)
         val binding = PostItemBinding.inflate(inflater, parent, false)
 
-        return CommentAdapter.ViewHolder(binding)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -48,7 +48,6 @@ class CommentAdapter : ListAdapter<Comment, CommentAdapter.ViewHolder>(DIFF_CALL
         fun bind(item: Comment) = with(binding) {
             this.title.text = item.username
             this.postText.text = item.commentText
-
             this.author.visibility = View.GONE
 
             val dateDiff =  TimeUnit.DAYS.convert(

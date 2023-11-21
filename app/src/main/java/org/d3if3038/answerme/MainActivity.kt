@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.transition.TransitionManager
 import android.view.View
+import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
         installSplashScreen()
 
         super.onCreate(savedInstanceState)
@@ -49,14 +51,12 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, OnBoardingActivity::class.java))
         }
 
-        val transform = Hold().apply {
-            addTarget(binding.bottomNavigation)
-        }
-
-
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.mainContainerFragment) as NavHostFragment
         navController = navHostFragment.navController
         navController.addOnDestinationChangedListener { _, destination, _ ->
+            val transform = Hold().apply {
+                addTarget(binding.bottomNavigation)
+            }
             TransitionManager.beginDelayedTransition(binding.bottomNavigation, transform)
 
             binding.bottomNavigation.visibility = when(destination.id) {

@@ -112,22 +112,18 @@ class CommentNotifService : Service() {
                         if (error != null) return@addSnapshotListener
                         if (value == null || value.isEmpty) return@addSnapshotListener
 
-                        Log.d("FIREBASE_CHANGE_LEN", value.documents.size.toString())
-
                         value.documentChanges.forEach {
                             val document = it.document
 
                             if (it.type != DocumentChange.Type.MODIFIED)
                                 return@forEach
 
-                            val data = document.data
-                            val comments = document.get("comments")
-
-                            Log.d("FIREBASE_DATA", comments.toString())
-                            Log.d("FIREBASE_CHANGE", data.toString())
+                            val comments = document.get("comments") as List<*>
+                            val latComment = comments[comments.size - 1] as HashMap<*, *>
 
                             createCommentNotification(
                                 document.getString("title")!!,
+                                latComment["username"].toString(),
                                 document.getString("documentId")
                             )
                         }
@@ -157,7 +153,7 @@ class CommentNotifService : Service() {
 
     }
 
-    private fun createCommentNotification(postTitle: String, documentId: String?) {
+    private fun createCommentNotification(postTitle: String, commentAuthor: String, documentId: String?) {
         val NOTIFICATION_CHANNEL_ID = "NEW COMMENT CHANNEL"
         val channelName = "New Comment Notification"
 
@@ -183,7 +179,7 @@ class CommentNotifService : Service() {
             .setContentText(
                 applicationContext.getString(
                     R.string.get_a_new_comment_from_s,
-                    "Sukijak"
+                    commentAuthor
                 ))
 
         val bundle = Bundle()

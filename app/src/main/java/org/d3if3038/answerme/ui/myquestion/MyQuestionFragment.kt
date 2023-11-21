@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
 import org.d3if3038.answerme.R
 import org.d3if3038.answerme.data.SettingDataStore
 import org.d3if3038.answerme.data.dataStore
@@ -46,6 +48,7 @@ class MyQuestionFragment : Fragment() {
 
         with(binding.myPostRecycleView) {
             adapter = myPostAdapter
+//            addItemDecoration(DividerItemDecoration(context, RecyclerView.VERTICAL))
 
             setHasFixedSize(true)
         }

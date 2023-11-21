@@ -14,6 +14,8 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
 import com.google.android.material.transition.platform.Hold
+import com.google.android.material.transition.platform.MaterialFadeThrough
+import com.google.android.material.transition.platform.MaterialSharedAxis
 import org.d3if3038.answerme.MainActivity
 import org.d3if3038.answerme.R
 import org.d3if3038.answerme.adapter.QuestionAdapter
@@ -30,7 +32,11 @@ class FeedsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        exitTransition = Hold()
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ true)
+        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, /* forward= */ false).apply {
+            duration = 500L
+        }
+
     }
 
     override fun onCreateView(
@@ -82,6 +88,8 @@ class FeedsFragment : Fragment() {
 
         with(binding) {
             myPostRecycleView.adapter = questionAdapter
+//            myPostRecycleView.addItemDecoration(DividerItemDecoration(context, RecyclerView.VERTICAL))
+
             topBar.topCollapsingToolbarLayout.title = getString(R.string.feeds)
         }
 

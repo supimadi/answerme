@@ -43,6 +43,14 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chipFun"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="@string/fun"/>
+
+                <com.google.android.material.chip.Chip
                     android:id="@+id/chipMusic"
                     style="@style/Widget.Material3.Chip.Filter"
                     android:layout_width="wrap_content"
