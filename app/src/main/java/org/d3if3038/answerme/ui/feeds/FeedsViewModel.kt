@@ -38,20 +38,24 @@ class FeedsViewModel : ViewModel() {
     }
 
     private fun connectRealtimeDb() {
-        firebaseDb.collection(COLLECTION_NAME)
-            .addSnapshotListener { value, error ->
-                if (error != null) {
-                    message.postValue("There Something Wrong...")
-                    return@addSnapshotListener
-                }
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                firebaseDb.collection(COLLECTION_NAME)
+                        .addSnapshotListener { value, error ->
+                            if (error != null) {
+                                message.postValue("There Something Wrong...")
+                                return@addSnapshotListener
+                            }
 
-                value?.documentChanges?.forEach {
-                    if (it.type == DocumentChange.Type.ADDED) {
-                        isNewPost.value = true
-                        return@addSnapshotListener
-                    }
+                            value?.documentChanges?.forEach {
+                                if (it.type == DocumentChange.Type.ADDED) {
+                                    isNewPost.value = true
+                                    return@addSnapshotListener
+                                }
+                            }
+                        }
                 }
-            }
+        }
     }
 
     fun getFeeds(category: List<String>? = null) {

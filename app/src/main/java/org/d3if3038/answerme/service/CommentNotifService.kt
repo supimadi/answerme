@@ -30,6 +30,7 @@ import org.d3if3038.answerme.R
 import org.d3if3038.answerme.data.SettingDataStore
 import org.d3if3038.answerme.data.dataStore
 import org.d3if3038.answerme.model.Actions
+import org.d3if3038.answerme.model.Comment
 import java.util.Random
 
 class CommentNotifService : Service() {
@@ -118,7 +119,13 @@ class CommentNotifService : Service() {
                             if (it.type == DocumentChange.Type.REMOVED)
                                 return@forEach
 
-                            val comments = document.get("comments") as List<*>
+                            val comments: List<*>?
+                            try {
+                                comments = document.get("comments") as List<*>
+                            } catch (e: NullPointerException) {
+                                return@forEach
+                            }
+
                             val latComment = comments[comments.size - 1] as HashMap<*, *>
                             val author = latComment["username"].toString()
 

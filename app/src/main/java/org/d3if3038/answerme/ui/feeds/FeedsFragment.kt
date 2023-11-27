@@ -13,8 +13,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
-import com.google.android.material.transition.platform.Hold
-import com.google.android.material.transition.platform.MaterialFadeThrough
 import com.google.android.material.transition.platform.MaterialSharedAxis
 import org.d3if3038.answerme.MainActivity
 import org.d3if3038.answerme.R
@@ -69,7 +67,6 @@ class FeedsFragment : Fragment() {
 
             binding.refreshButton.visibility = View.VISIBLE
         }
-
         binding.refreshButton.setOnClickListener {
             viewModel.getFeeds()
         }
@@ -88,8 +85,6 @@ class FeedsFragment : Fragment() {
 
         with(binding) {
             myPostRecycleView.adapter = questionAdapter
-//            myPostRecycleView.addItemDecoration(DividerItemDecoration(context, RecyclerView.VERTICAL))
-
             topBar.topCollapsingToolbarLayout.title = getString(R.string.feeds)
         }
 
