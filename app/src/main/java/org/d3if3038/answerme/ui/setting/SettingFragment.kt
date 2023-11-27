@@ -1,6 +1,7 @@
 package org.d3if3038.answerme.ui.setting
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,6 +53,11 @@ class SettingFragment : Fragment() {
         binding.saveProfileBtn.setOnClickListener {
             if (!binding.saveProfileBtn.isEnabled) return@setOnClickListener
 
+            if (binding.usernameInputHint.isErrorEnabled) {
+                Toast.makeText(requireContext(), "Please Enter A Correct Username...", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
             val username = binding.usernameInputText.text.toString()
             if (username.isEmpty()) {
                 Toast.makeText(requireContext(), "Please Enter The Username...", Toast.LENGTH_LONG).show()
@@ -88,6 +94,8 @@ class SettingFragment : Fragment() {
             updateProfileUI(it.username, it.diceBear)
         }
         viewModel.getErrorMessage().observe(viewLifecycleOwner) {
+            if (!binding.saveProfileBtn.isEnabled) return@observe
+
             Toast.makeText(
                 requireContext(),
                 getString(R.string.failed_message, it),
@@ -97,8 +105,6 @@ class SettingFragment : Fragment() {
     }
 
     private fun updateProfileUI(username: String, dicebearUrl: String) {
-        if (binding.usernameInputHint.isErrorEnabled) return
-
         binding.usernameInputText.setText(username)
         if (dicebearUrl.isEmpty()) {
             Glide.with(requireActivity())

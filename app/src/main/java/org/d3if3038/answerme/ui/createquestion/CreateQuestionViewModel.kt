@@ -24,7 +24,6 @@ class CreateQuestionViewModel : ViewModel() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val document = firebaseDb.collection("posts").document()
-                var isSuccess = false
                 post.documentId = document.id
 
                 document
@@ -36,7 +35,6 @@ class CreateQuestionViewModel : ViewModel() {
                     .addOnSuccessListener {
                         message.postValue("Success Post a New Question!")
                         postStatus.postValue(FetchStatus.SUCCESS)
-                        isSuccess = true
                     }
             }
         }

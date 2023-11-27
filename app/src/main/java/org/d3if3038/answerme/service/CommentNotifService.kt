@@ -130,6 +130,7 @@ class CommentNotifService : Service() {
                             val author = latComment["username"].toString()
 
                             if (author == username) return@forEach
+                            Log.d("NOTIFICATION_SERVICE", comments.size.toString())
 
                             createCommentNotification(
                                 document.getString("title")!!,
