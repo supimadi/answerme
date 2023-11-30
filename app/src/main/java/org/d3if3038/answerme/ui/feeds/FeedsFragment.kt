@@ -84,7 +84,7 @@ class FeedsFragment : Fragment() {
         }
 
         with(binding) {
-            myPostRecycleView.adapter = questionAdapter
+            feedRecycleView.adapter = questionAdapter
             topBar.topCollapsingToolbarLayout.title = getString(R.string.feeds)
         }
 
