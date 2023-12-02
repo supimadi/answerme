@@ -3,6 +3,7 @@ package org.d3if3038.answerme.adapter
 import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.Navigation
@@ -56,6 +57,13 @@ class QuestionAdapter : ListAdapter<Post, QuestionAdapter.ViewHolder>(DIFF_CALLB
             this.author.text = item.username
             this.title.text = item.title
             this.postText.text = item.question
+
+            if (item.comments.isNullOrEmpty()) {
+                this.commentCounter.text = "0 Comments"
+            } else{
+                this.commentCounter.text = "${item.comments?.size} Comments"
+            }
+            this.commentCounter.visibility = View.VISIBLE
 
             val dateDiff =  TimeUnit.DAYS.convert(
                 System.currentTimeMillis() - item.timeStamp,

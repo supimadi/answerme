@@ -1,6 +1,5 @@
 package org.d3if3038.answerme
 
-import androidx.compose.ui.text.input.TextInputForTests
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -14,12 +13,9 @@ import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withHint
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.delay
@@ -54,7 +50,7 @@ class MainActivityTest {
             "testingFromHome",
             USERNAME,
             DICEBEAR_URL,
-            "!I'mjusttestin!",
+            "#I'mjusttestin!",
             mutableListOf("Testing"),
             "I'mJustTesting!",
             null,
@@ -74,10 +70,16 @@ class MainActivityTest {
 
     @Before
     fun setActivityScenario() {
+        runBlocking {
+            InstrumentationRegistry.getInstrumentation()
+                .targetContext
+                .dataStore.edit {
+                    it[booleanPreferencesKey("is_boarded")] = true
+                }
+        }
+
         firebaseDb.collection("profile").document(USERNAME)
             .delete()
-
-        deleteFirebaseData()
 
         activityScenario = ActivityScenario.launch(
             MainActivity::class.java
@@ -86,7 +88,6 @@ class MainActivityTest {
 
     @After
     fun closeActivityScenario() {
-        activityScenario?.close()
         runBlocking {
             InstrumentationRegistry.getInstrumentation()
                 .targetContext
@@ -98,18 +99,24 @@ class MainActivityTest {
                     it[stringPreferencesKey("dicebearLink")] = DICEBEAR_URL
                 }
         }
-
-        // Delay from closing the ui
-        runBlocking {
-            launch {
-                delay(1000L)
-            }
-        }
+        activityScenario?.close()
     }
 
     @Test
     fun aSetupUsernameUser() {
-        clearDataStore()
+        runBlocking {
+            InstrumentationRegistry.getInstrumentation()
+                .targetContext
+                .dataStore.edit {
+                    it.clear()
+
+                    it[booleanPreferencesKey("is_boarded")] = true
+                }
+
+            launch {
+                delay(1000L)
+            }
+        }
 
         onView(withId(R.id.settingPage)).perform(click())
         onView(withId(R.id.usernameInputText))
@@ -117,35 +124,30 @@ class MainActivityTest {
         onView(withId(R.id.saveProfileBtn)).perform(
             click()
         )
-
-        // Delay from closing the ui
-        runBlocking {
-            launch {
-                delay(1000L)
-            }
-        }
     }
 
     @Test
     fun bFragmentCreateQuestion() {
-        onView(withId(R.id.fabNewPost)).perform(click())
-
-        // Delay from closing the ui
         runBlocking {
-            launch {
-                delay(1000L)
-            }
+            InstrumentationRegistry.getInstrumentation()
+                .targetContext
+                .dataStore.edit {
+                    it[booleanPreferencesKey("is_boarded")] = true
+                    it[stringPreferencesKey("username")] = USERNAME
+                    it[stringPreferencesKey("dicebearLink")] = DICEBEAR_URL
+                }
         }
+
+        onView(withId(R.id.fabNewPost)).perform(click())
 
         onView(withId(R.id.chipFilm)).perform(click())
         onView(withId(R.id.titleTextInput)).perform(typeText(
-            QUESTION_DUMMY.question
+            QUESTION_DUMMY.title
         ))
         onView(withId(R.id.questionTextInput)).perform(typeText(
             QUESTION_DUMMY.question
         ))
         onView(withId(R.id.postButton)).perform(click())
-
     }
 
     @Test
@@ -177,13 +179,13 @@ class MainActivityTest {
         onView(withId(R.id.commenttextinput)).perform(
             typeText(COMMENT_DUMMY.commentText)
         )
+    }
 
-        // Delay from closing the ui
-        runBlocking {
-            launch {
-                delay(500L)
-            }
-        }
+    @Test
+    fun gCheckMyPostFragment() {
+        onView(withId(R.id.myQuestionPage)).perform(click())
+        onView(withId(R.id.myPostRecycleView)).atItem(0, click())
+        onView(withId(R.id.commentFragmentLayout)).check(matches(isDisplayed()))
 
         deleteFirebaseData()
     }
@@ -195,20 +197,8 @@ class MainActivityTest {
         )
     }
 
-
-    private fun clearDataStore() {
-        runBlocking {
-            InstrumentationRegistry.getInstrumentation()
-                .targetContext
-                .dataStore.edit {
-                    it.clear()
-                    it[booleanPreferencesKey("is_boarded")] = true
-                }
-        }
-    }
-
     private fun deleteFirebaseData() {
-        firebaseDb.collection("post")
+        firebaseDb.collection("posts")
             .whereEqualTo("title", QUESTION_DUMMY.title)
             .get()
             .addOnSuccessListener { querySnapshot ->
