@@ -1,7 +1,6 @@
 package org.d3if3038.answerme.ui.setting
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,12 +42,14 @@ class SettingFragment : Fragment() {
             settingDataStore.getString("username", ""),
             settingDataStore.getString("dicebearLink", ""),
         )
+
         registerViewModel()
 
         binding.usernameInputText.addTextChangedListener {
             if (it.isNullOrEmpty()) return@addTextChangedListener
             checkUsernameLength()
         }
+
         binding.topBar.topCollapsingToolbarLayout.title = getString(R.string.setting)
         binding.saveProfileBtn.setOnClickListener {
             if (!binding.saveProfileBtn.isEnabled) return@setOnClickListener
@@ -70,6 +71,8 @@ class SettingFragment : Fragment() {
                     diceBear = "https://api.dicebear.com/7.x/adventurer/png?backgroundColor=b6e3f4,c0aede,d1d4f9&seed=${username}"
                 )
             )
+
+            settingDataStore.putBoolean("profileCreated", true)
         }
     }
 
@@ -83,16 +86,6 @@ class SettingFragment : Fragment() {
     }
 
     private fun  registerViewModel() {
-        viewModel.getProfile().observe(viewLifecycleOwner) {
-            settingDataStore.putString("username", it.username)
-            settingDataStore.putString("dicebearLink", it.diceBear)
-            settingDataStore.putBoolean("profileCreated", true)
-
-            binding.saveProfileBtn.isEnabled = false
-            binding.usernameInputText.isEnabled = false
-
-            updateProfileUI(it.username, it.diceBear)
-        }
         viewModel.getErrorMessage().observe(viewLifecycleOwner) {
             if (!binding.saveProfileBtn.isEnabled) return@observe
 
@@ -106,6 +99,7 @@ class SettingFragment : Fragment() {
 
     private fun updateProfileUI(username: String, dicebearUrl: String) {
         binding.usernameInputText.setText(username)
+
         if (dicebearUrl.isEmpty()) {
             Glide.with(requireActivity())
                 .load(R.drawable.baseline_account_circle_24).into(binding.profileImage)
