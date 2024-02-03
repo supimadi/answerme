@@ -10,15 +10,18 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.d3if3038.answerme.model.FetchStatus
 import org.d3if3038.answerme.model.Profile
 
 class SettingViewModel: ViewModel() {
     private val firebaseDb = Firebase.firestore
     private val message = MutableLiveData<String>()
     private val profile = MutableLiveData<Profile>()
+    private val status = MutableLiveData<FetchStatus>()
 
     fun getProfile(): LiveData<Profile> = profile
     fun getErrorMessage(): LiveData<String> = message
+    fun getStatus(): LiveData<FetchStatus> = status
 
     fun saveProfile(profileInput: Profile) {
         viewModelScope.launch {
@@ -37,9 +40,11 @@ class SettingViewModel: ViewModel() {
                             document
                                 .set(profileInput)
                                 .addOnFailureListener {
+                                    status.postValue(FetchStatus.FAILED)
                                     message.postValue(it.message?.split(".")?.get(0) ?: "Silahkan Coba Lagi.")
                                 }
                                 .addOnSuccessListener {
+                                    status.postValue(FetchStatus.SUCCESS)
                                     profile.value = profileInput
                                     message.postValue("Success Setup Profile!")
                                 }
@@ -47,6 +52,7 @@ class SettingViewModel: ViewModel() {
                     }
                     .addOnFailureListener {
                         message.postValue(it.message?.split(".")?.get(0) ?: "Silahkan Coba Lagi.")
+                        status.postValue(FetchStatus.FAILED)
                     }
 
             }

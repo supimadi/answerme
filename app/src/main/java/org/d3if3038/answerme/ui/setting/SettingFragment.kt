@@ -13,6 +13,7 @@ import org.d3if3038.answerme.R
 import org.d3if3038.answerme.data.SettingDataStore
 import org.d3if3038.answerme.data.dataStore
 import org.d3if3038.answerme.databinding.FragmentSettingBinding
+import org.d3if3038.answerme.model.FetchStatus
 import org.d3if3038.answerme.model.Profile
 
 class SettingFragment : Fragment() {
@@ -52,8 +53,6 @@ class SettingFragment : Fragment() {
 
         binding.topBar.topCollapsingToolbarLayout.title = getString(R.string.setting)
         binding.saveProfileBtn.setOnClickListener {
-            if (!binding.saveProfileBtn.isEnabled) return@setOnClickListener
-
             if (binding.usernameInputHint.isErrorEnabled) {
                 Toast.makeText(requireContext(), "Please Enter A Correct Username...", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
@@ -71,8 +70,6 @@ class SettingFragment : Fragment() {
                     diceBear = "https://api.dicebear.com/7.x/adventurer/png?backgroundColor=b6e3f4,c0aede,d1d4f9&seed=${username}"
                 )
             )
-
-            settingDataStore.putBoolean("profileCreated", true)
         }
     }
 
@@ -86,6 +83,13 @@ class SettingFragment : Fragment() {
     }
 
     private fun  registerViewModel() {
+        viewModel.getProfile().observe(viewLifecycleOwner) {
+            settingDataStore.putString("username", it.username)
+            settingDataStore.putString("dicebearLink", it.diceBear)
+            updateProfileUI(it.username, it.diceBear)
+            disableInput()
+        }
+
         viewModel.getErrorMessage().observe(viewLifecycleOwner) {
             if (!binding.saveProfileBtn.isEnabled) return@observe
 
@@ -95,6 +99,24 @@ class SettingFragment : Fragment() {
                 Toast.LENGTH_LONG)
                 .show()
         }
+
+        viewModel.getStatus().observe(viewLifecycleOwner) {
+            when(it) {
+                FetchStatus.SUCCESS -> {
+                    settingDataStore.putBoolean("profileCreated", true)
+                    disableInput()
+                }
+                FetchStatus.FAILED -> {
+                    settingDataStore.putBoolean("profileCreated", false)
+                }
+                else -> {}
+            }
+        }
+    }
+
+    private fun disableInput() {
+        binding.saveProfileBtn.isEnabled = false
+        binding.usernameInputText.isEnabled = false
     }
 
     private fun updateProfileUI(username: String, dicebearUrl: String) {
@@ -109,8 +131,7 @@ class SettingFragment : Fragment() {
         }
 
         if (settingDataStore.getBoolean("profileCreated", false)) {
-            binding.saveProfileBtn.isEnabled = false
-            binding.usernameInputText.isEnabled = false
+            disableInput()
         }
     }
 }

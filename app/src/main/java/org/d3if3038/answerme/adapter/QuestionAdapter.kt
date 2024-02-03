@@ -58,11 +58,11 @@ class QuestionAdapter : ListAdapter<Post, QuestionAdapter.ViewHolder>(DIFF_CALLB
             this.title.text = item.title
             this.postText.text = item.question
 
-            if (item.comments.isNullOrEmpty()) {
-                this.commentCounter.text = "0 Comments"
-            } else{
-                this.commentCounter.text = "${item.comments?.size} Comments"
-            }
+            this.commentCounter.text = (if (item.comments.isNullOrEmpty()) {
+                "0 Comments"
+            } else {
+                "${item.comments?.size} Comments"
+            }).toString()
             this.commentCounter.visibility = View.VISIBLE
 
             val dateDiff =  TimeUnit.DAYS.convert(
